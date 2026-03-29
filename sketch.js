@@ -24,6 +24,7 @@ function startButton() {
      mouseY >= 180 && mouseY <= 240 &&
      mouseIsPressed == true) {
     console.log("Start");
+    window.location.href = 'rockLevel.html'; // this moves to the test level right now
   }
 }
   
