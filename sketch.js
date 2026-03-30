@@ -1,6 +1,13 @@
+let menuMusic; // music
+
 function setup() {
   createCanvas(960, 540);
   x = 0;
+  backGroundMusic();
+}
+
+function preload() {
+  menuMusic = loadSound('Assets/Music/Fire_Ah_PlaceHolder.mp3'); // change file path when we have the actual menu music
 }
 
 function draw() {
@@ -9,6 +16,12 @@ function draw() {
   levelButton();
   tutorialButton();
   settingsButton();
+}
+
+function backGroundMusic() {
+  menuMusic.play();
+  menuMusic.setVolume(0.3); // change the volume between 0.0 and 1.0 if needed
+  userStartAudio();
 }
 
 function startButton() {
