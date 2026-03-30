@@ -1,7 +1,9 @@
 let menuMusic; // music
+const CANVAS_HEIGHT = 960;
+const CANVAS_WIDTH = 540;
 
 function setup() {
-  createCanvas(960, 540);
+  createCanvas(CANVAS_HEIGHT, CANVAS_WIDTH);
   x = 0;
   backGroundMusic();
 }
@@ -9,10 +11,12 @@ function setup() {
 function preload() {
   menuBacking = loadImage('Assets/menu_lava.png');
   menuMusic = loadSound('Assets/Music/Fire_Ah_PlaceHolder.mp3'); // change file path when we have the actual menu music
+  menuLargeBg = loadImage('Assets/menu_background.png');
 }
 
 function draw() {
   background(220);
+  image(menuLargeBg, 0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
   image(menuBacking, 160, -90, 650, 700);
   startButton();
   levelButton();
