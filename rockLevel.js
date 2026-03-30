@@ -1,3 +1,5 @@
+let levelMusic;
+
 function setup() {
   createCanvas(960, 540);
   x = 0;
