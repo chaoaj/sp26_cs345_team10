@@ -1,20 +1,8 @@
-let menuMusic; // music
-const CANVAS_HEIGHT = 960;
-const CANVAS_WIDTH = 540;
 
-function setup() {
-  createCanvas(CANVAS_HEIGHT, CANVAS_WIDTH);
-  x = 0;
-  backGroundMusic();
-}
 
-function preload() {
-  menuBacking = loadImage('../Assets/menu_lava.png');
-  menuMusic = loadSound('../Assets/Music/Fire_Ah_PlaceHolder.mp3'); // change file path when we have the actual menu music
-  menuLargeBg = loadImage('../Assets/menu_background.png');
-}
+let x = 0;
 
-function draw() {
+function menuDraw() {
   background(220);
   image(menuLargeBg, 0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
   image(menuBacking, 160, -90, 650, 700);
@@ -22,12 +10,6 @@ function draw() {
   levelButton();
   tutorialButton();
   settingsButton();
-}
-
-function backGroundMusic() {
-  menuMusic.play();
-  menuMusic.setVolume(0.3); // change the volume between 0.0 and 1.0 if needed
-  userStartAudio();
 }
 
 function startButton() {
@@ -43,11 +25,12 @@ function startButton() {
      mouseY >= 180 - 50 && mouseY <= 240 - 50 &&
      mouseIsPressed == true) {
     console.log("Start");
-    window.location.href = 'rockLevel.html'; // this moves to the test level right now
+    levelRender = 3; // this moves to the test level right now
+    playLevelMusic(); // Update game music
   }
 }
   
-  function levelButton() {
+function levelButton() {
   level = ["Story Mode", "Arcade Mode", "Chao Mode"];
   fill("red");
   rect(360, 260 - 50, 240, 60);

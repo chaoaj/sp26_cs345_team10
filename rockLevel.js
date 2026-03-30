@@ -18,6 +18,7 @@ function draw() {
 function playLevelMusic() {
   levelMusic.play();
   levelMusic.setVolume(0.3); // change the volume between 0.0 and 1.0 if needed
+  userStartAudio();
 }
 
 
