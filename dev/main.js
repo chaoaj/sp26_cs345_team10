@@ -70,7 +70,18 @@ function draw() {
  */
 function switchLevel(levelName) {
     levelRender = levelName;
+    if (levelName === 'rock') {
+        rockSetup();
+    }
     playLevelMusic();
+}
+
+function keyPressed() {
+    pressedKeys[key] = true;
+}
+
+function keyReleased() {
+    pressedKeys[key] = false;
 }
 
 /**

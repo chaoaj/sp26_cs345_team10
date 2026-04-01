@@ -1,23 +1,27 @@
-let projectiles = []; // holds the projectiles being shot
-let player_x = 300;
-let player_y = 300; // this can be changed when the player class is ready
+let projectiles = [];
 
-  
+function rockSetup() {
+  player = new Player(CANVAS_HEIGHT / 2, CANVAS_WIDTH / 2);
+  projectiles = [];
+}
+
 function rockDraw() {
-  image(metal_back, 0, 0, 960, 540);
-  // debug stuff
-  circle(player_x, player_y, 50); // temporary character 
-  for (let i = 0; i < projectiles.length; i++) {
+  image(metal_back, 0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
+  player.update();
+  player.draw();
+  for (let i = projectiles.length - 1; i >= 0; i--) {
     projectiles[i].update();
     projectiles[i].display();
 
     if (projectiles[i].isOffScreen()) {
-      projectiles.splice(i, 0)
+      projectiles.splice(i, 1);
     }
   }
 }
 
 function mousePressed() {
-  projectiles.push(new Projectile(player_x, player_y, mouseX, mouseY));
+  if (levelRender === 'rock') {
+    projectiles.push(new Projectile(player.x, player.y, mouseX, mouseY));
+  }
 }
 
