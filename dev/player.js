@@ -42,16 +42,14 @@ class Player {
 
 let animation = [];
 let animation2 = [];
-let guy, spriteData, spritesheet, explodesheet, mapsheet, explodeData;
+let guy, spriteData, spritesheet, mapsheet;
 let bgX = 0;
 
 const SPEED = 2;
 
 function preload() {
   spriteData = loadJSON("red_guy.json");
-  explodeData = loadJSON("explode.json");
   spritesheet = loadImage("assets/red_guy_sheet.png");
-  explodesheet = loadImage("assets/element_explosion.png");
   mapsheet = loadImage("assets/lava_background.png");
 }
 
@@ -60,24 +58,15 @@ function setup() {
   textSize(32);
   
   const frames = spriteData.frames;
-  const eframes = explodeData.frames;
   const frameCount = frames.length;
-  const eframeCount = eframes.length;
 
   for (let i = 0; i < frameCount; i++) {
     const pos = frames[i].position;
     animation.push(spritesheet.get(pos.x, pos.y, pos.w, pos.h));
   }
-  
-  for (let i = 0; i < eframeCount; i++) {
-    const pos = eframes[i].position;
-    animation2.push(explodesheet.get(pos.x, pos.y, pos.w, pos.h));
-  }
 
   guy = new Sprite(animation, 0, 75, 0.1);
   guy.size = 0.5;
-  explode = new Sprite(animation2, 200, 200, 0.1);
-  explode.size = 0.5;
 }
 
 function draw() {
@@ -112,19 +101,7 @@ function draw() {
   } else {
     guy.setFrameRange(0, 2); // idle frames
   }
-
-  explode.setFrameRange(0, 0);
-  
-  if (guy.hits(explode)) {
-    explode.setFrameRange(0, 3);
-  }
   
   guy.show();
   guy.animate();
-  
-  explode.show();
-  explode.animate();
-  
-  text("Arrow keys to move", 60, 75);
-  text("He does the wave", 70, 120);
 }
