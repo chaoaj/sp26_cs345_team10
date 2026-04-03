@@ -59,6 +59,9 @@ function draw() {
         case 'rock':
             rockDraw();
             break;
+        case 'edm':
+            edmDraw();
+            break;
         default:
             break;
     }
@@ -79,11 +82,17 @@ function switchLevel(levelName) {
     if (levelName === 'rock') {
         rockSetup();
     }
+    if (levelName == 'edm') { // edm level
+        edmSetup();
+    }
     playLevelMusic();
 }
 
 function keyPressed() {
     pressedKeys[key] = true;
+    if (key === 'c') { // added for testing
+        switchLevel('edm');
+    }
 }
 
 function keyReleased() {

@@ -1,14 +1,13 @@
-let projectiles = [];
 let player_x = 200;
 let player_y = 200;
 let player_1;
 
 
-function rockSetup() {
+function edmSetup() {
   player_1 = new Player(player_x, player_y);
 }
 
-function rockDraw() {
+function edmDraw() {
   image(metal_back, 0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
   player_1.update();
   player_1.draw();
