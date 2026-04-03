@@ -11,7 +11,7 @@ class Player {
     this.spritesheet = spritesheet;
     this.Anispeed = Anispeed;
 
-    this.player_ani = new Sprite(spriteData, spritesheet, Anispeed);
+    this.player_ani = new Sprite(spritedata, spritesheet, Anispeed);
     
     this.speed = 4;
   }

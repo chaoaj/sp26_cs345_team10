@@ -17,10 +17,16 @@ class Sprite {
     
     show(x, y) {
         let index = floor(this.index) % this.len;
-        image(this.animation[index], x, y);
+        image(this.animation[index], x, y, 40, 40);
     }
 
     animate() {
         this.index += this.speed
+    }
+
+    flip() {
+        let index = floor(this.index) % this.len;
+        scale(-1, -1);
+        image(this.animation[index], x, y, 40, 40);
     }
 }
