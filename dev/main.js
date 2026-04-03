@@ -27,6 +27,12 @@ var menuBacking, menuMusic, menuLargeBg, menuStartButton, menuModeButton;
 var metal_back, rockMusic;
 var edm_back;
 var spritesheet, bullet;
+=======
+let projectiles = [];
+let player_x = CANVAS_HEIGHT / 2;
+let player_y = CANVAS_WIDTH / 2;
+let player_1;
+>>>>>>> 9ffbaef3f65185c22947af84931f1888e7c62c8d
 
 /*
 ======================================
@@ -113,6 +119,7 @@ function keyReleased() {
 
 function mousePressed() {
     if (levelRender === 'rock' || levelRender === 'edm') {
+    if (levelRender != 'menu') {
         projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
     }
 }
