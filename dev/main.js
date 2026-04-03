@@ -22,6 +22,11 @@ const CANVAS_WIDTH = 540;
 // See: https://p5js.org/reference/p5.sound/
 let levelMusic;
 
+let projectiles = [];
+let player_x = CANVAS_HEIGHT / 2;
+let player_y = CANVAS_WIDTH / 2;
+let player_1;
+
 /*
 ======================================
 ---------- p5.js core functions ------
@@ -103,7 +108,7 @@ function keyReleased() {
 }
 
 function mousePressed() {
-    if (levelRender === 'rock' || levelRender === 'edm') {
+    if (levelRender != 'menu') {
         projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
     }
 }

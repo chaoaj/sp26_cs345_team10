@@ -1,9 +1,3 @@
-let projectiles = [];
-let player_x = 200;
-let player_y = 200;
-let player_1;
-
-
 function rockSetup() {
   player_1 = new Player(player_x, player_y);
   projectiles = [];
