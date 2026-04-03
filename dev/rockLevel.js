@@ -1,5 +1,5 @@
 function rockSetup() {
-  player_1 = new Player(player_x, player_y);
+  player_1 = new Player(player_x, player_y, spriteData, spritesheet, 0.1);
   projectiles = [];
 }
 
@@ -15,4 +15,5 @@ function rockDraw() {
       projectiles.splice(i, 1);
     }
   }
+
 }

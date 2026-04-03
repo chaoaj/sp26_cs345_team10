@@ -26,6 +26,7 @@ let projectiles = [];
 let player_x = CANVAS_HEIGHT / 2;
 let player_y = CANVAS_WIDTH / 2;
 let player_1;
+let playerAni;
 
 /*
 ======================================
@@ -50,6 +51,7 @@ function preload() {
 
     // Player 
     spritesheet = loadImage('../Assets/red_guy_sheet.png');
+    spriteData = loadJSON('../Assets/redguy.json')
     bullet = loadImage('../Assets/bullet.png')
 }
 
