@@ -22,6 +22,7 @@ const CANVAS_WIDTH = 540;
 // See: https://p5js.org/reference/p5.sound/
 let levelMusic;
 
+<<<<<<< HEAD
 // Assets loaded in preload()
 var menuBacking, menuMusic, menuLargeBg, menuStartButton, menuModeButton;
 var metal_back, rockMusic;
