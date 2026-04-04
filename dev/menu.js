@@ -2,6 +2,16 @@ function menuDraw() {
   background(220);
   image(menuLargeBg, 0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
   image(menuBacking, 160, -90, 650, 700);
+  // Pulsing logo
+  let scale = 1 + 0.1 * sin(frameCount * 0.02);
+  let scaleFactor = 400 / menuLogoGlow.width;
+  let baseWidth = menuLogoGlow.width * scaleFactor;
+  let baseHeight = menuLogoGlow.height * scaleFactor;
+  let centerX = 10 + baseWidth / 2;
+  let centerY = 10 + baseHeight / 2;
+  let x = centerX - (baseWidth * scale / 2);
+  let y = centerY - (baseHeight * scale / 2);
+  image(menuLogoGlow, x, y, baseWidth * scale, baseHeight * scale);
   startButton();
   levelButton();
   tutorialButton();

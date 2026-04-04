@@ -46,6 +46,7 @@ function preload() {
     menuStoryButton = [loadImage('../Assets/Buttons/story.png'), loadImage('../Assets/Buttons/story_select.png')];
     menuArcadeButton = [loadImage('../Assets/Buttons/arcade.png'), loadImage('../Assets/Buttons/arcade_select.png')];
     menuChaoButton = [loadImage('../Assets/Buttons/chao.png'), loadImage('../Assets/Buttons/chao_select.png')];
+    menuLogoGlow = loadImage('../Assets/logo_glow.png');
 
     // Metal level
     metal_back = loadImage('../Assets/test_level_lava.png');
