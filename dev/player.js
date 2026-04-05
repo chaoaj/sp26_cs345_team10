@@ -4,11 +4,20 @@ let spriteImages = [];
 let pressedKeys = {};
 
 class Player {
-  constructor(x, y) {
+  constructor(x, y, spritedata, spritesheet, Anispeed) {
     this.x = x;
     this.y = y;
+    this.spritedata = spritedata;
+    this.spritesheet = spritesheet;
+    this.Anispeed = Anispeed;
+
+    this.player_ani = new Sprite(spritedata, spritesheet, Anispeed);
+
+    this.w = this.player_ani.width // these are needed for hit detections
+    this.h = this.player_ani.height // these are needed for hit detections
     
     this.speed = 4;
+    this.pos = createVector(x, y); // this is for tracking for the enemies and bosses
   }
   
   update() {
@@ -33,29 +42,14 @@ class Player {
     
     this.x += mvmt.x;
     this.y += mvmt.y;
+
+    this.pos.set(this.x, this.y)
   }
   
   draw() {
-    //let point = atan2(mouseY, mouseX);
-    fill(255, 0, 0);
-    circle(this.x, this.y, 50);
-    //translate(cir.x, cir.y)
-    //rotate(point)
-    //rect(this.x, this.y, 60, 20);
-    
-    //image(spriteImages[0], this.x, this.y, 50, 50) // this is unfinished
+    this.player_ani.show(this.x - 20, this.y - 20); // temporary fix probably should change properly
+    this.player_ani.animate();
   }
-/*
-  setup() {
-    spriteImages.push(spritesheet)
-  }
-
-  keyPressed() {
-    pressedKeys[key] = true
-  }
-
-  keyReleased() {
-    delete pressedKeys[key];
-  }
-  */
 }
+
+
