@@ -74,6 +74,9 @@ function setup() {
 }
 
 function draw() {
+    if (!paused && typeof updateGamepads === "function") {
+        updateGamepads();
+    }
     switch (levelRender) {
         case 'menu':
             menuDraw();
@@ -130,6 +133,9 @@ function keyReleased() {
 }
 
 function mousePressed() {
+    if (paused) {
+        return;
+    }
     if (levelRender === 'rock' || levelRender === 'edm') {
         projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
     }

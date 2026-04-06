@@ -25,32 +25,38 @@ function spawnBaddies(count) {
 
 function rockDraw() {
   image(metal_back, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  player_1.update();
-  player_1.draw();
-  for (let i = projectiles.length - 1; i >= 0; i--) { // apparently theres actually a good reason for looping backwards
-    projectiles[i].update();
-    projectiles[i].display();
+  if (!paused) {
+    player_1.update();
+    for (let i = projectiles.length - 1; i >= 0; i--) { // apparently theres actually a good reason for looping backwards
+      projectiles[i].update();
 
-    for (let j = enemies.length - 1; j >= 0; j--) {
-      if (projectiles[i].checkHit(enemies[j])) {
-        enemies.splice(j, 1); 
+      for (let j = enemies.length - 1; j >= 0; j--) {
+        if (projectiles[i].checkHit(enemies[j])) {
+          enemies.splice(j, 1);
+          projectiles.splice(i, 1);
+          break; // leaves loop because enemy gone
+        }
+      }
+
+      if (projectiles[i] && projectiles[i].isOffScreen()) { // first check is added because you need to check if the bullet is still there
         projectiles.splice(i, 1);
-        break; // leaves loop because enemy gone
       }
     }
 
-    if (projectiles[i] && projectiles[i].isOffScreen()) { // first check is added because you need to check if the bullet is still there
-      projectiles.splice(i, 1);
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      enemies[i].update(player_1);
+    }
+
+    if (enemies.length === 0) { // infinite enemies mode
+      spawnBaddies(8);
     }
   }
 
+  player_1.draw();
+  for (let i = projectiles.length - 1; i >= 0; i--) {
+    projectiles[i].display();
+  }
   for (let i = enemies.length - 1; i >= 0; i--) {
-    enemies[i].update(player_1); 
     enemies[i].draw();
   }
-
-  if (enemies.length === 0) { // infinite enemies mode
-    spawnBaddies(8);
-  }
-
 }

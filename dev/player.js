@@ -37,6 +37,19 @@ class Player {
       if(pressedKeys.s) {
         mvmt.y += 1;
       }
+
+      if (typeof gamepadInput !== "undefined") {
+        const gs = gamepadInput.leftStick;
+        if (Math.abs(gs.x) > 0 || Math.abs(gs.y) > 0) {
+          mvmt.x += gs.x;
+          mvmt.y += gs.y;
+        }
+        const pad = gamepadInput.dpad;
+        if (pad.left) mvmt.x -= 1;
+        if (pad.right) mvmt.x += 1;
+        if (pad.up) mvmt.y -= 1;
+        if (pad.down) mvmt.y += 1;
+      }
     }
     
     if (mvmt.mag() > 0) {
