@@ -55,7 +55,7 @@ function preload() {
     menuLogoGlow = loadImage('../Assets/logo_glow.png');
 
     // Metal level
-    metal_back = loadImage('../Assets/test_level_lava.png');
+    metal_back = loadImage('../Assets/Test_Level_Lava.png');
     rockMusic = loadSound('../Assets/Music/Terrible_Placeholder_Music.mp3');
 
     // EDM level
