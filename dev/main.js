@@ -14,9 +14,12 @@
 // 4 = trans
 let levelRender = 'menu'; 
 
-// Screen size
-const CANVAS_HEIGHT = 960;
-const CANVAS_WIDTH = 540;
+// Variable to detect if the game is paused
+let paused = false;
+
+// Set Screen size
+const CANVAS_HEIGHT = 750;
+const CANVAS_WIDTH = 1000;
 
 // p5 sound object for playing in-game music
 // See: https://p5js.org/reference/p5.sound/
@@ -65,12 +68,15 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(CANVAS_HEIGHT, CANVAS_WIDTH);
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     noSmooth();
     playLevelMusic();
 }
 
 function draw() {
+    if (!paused && typeof updateGamepads === "function") {
+        updateGamepads();
+    }
     switch (levelRender) {
         case 'menu':
             menuDraw();
@@ -83,6 +89,10 @@ function draw() {
             break;
         default:
             break;
+    }
+    // If the game is paused, draw pause menu overtop the game
+    if (levelRender != 'menu' && paused) {
+        pauseMenuDraw();
     }
 }
 
@@ -112,6 +122,10 @@ function keyPressed() {
     if (key === 'c') { // added for testing
         switchLevel('edm');
     }
+    if (key == 'Escape' && levelRender != 'menu') {
+        // Toggle pausing variable
+       paused = !paused; 
+    }
 }
 
 function keyReleased() {
@@ -119,6 +133,9 @@ function keyReleased() {
 }
 
 function mousePressed() {
+    if (paused) {
+        return;
+    }
     if (levelRender === 'rock' || levelRender === 'edm') {
         projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
     }
