@@ -31,6 +31,7 @@ var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menu
 var metal_back, rockMusic;
 var edm_back;
 var spritesheet, spriteData, bullet;
+var runnerSheet, runnerData
 
 let enemies = [];
 
@@ -65,6 +66,10 @@ function preload() {
     spritesheet = loadImage('../Assets/red_guy_sheet.png');
     spriteData = loadJSON('../Assets/redguy.json')
     bullet = loadImage('../Assets/bullet.png')
+
+    // Enemey
+    runnerSheet = loadImage('../Assets/vinyl_runner.png')
+    runnerData = loadJSON('../Assets/vinyl_runner.json')
 }
 
 function setup() {
