@@ -29,7 +29,7 @@ let levelMusic;
 var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
 var metal_back, rockMusic;
-var edm_back;
+var edm_back, edmMusic;
 var spritesheet, spriteData, bullet;
 var runnerSheet, runnerData
 
@@ -61,6 +61,7 @@ function preload() {
 
     // EDM level
     edm_back = loadImage('../Assets/Levels/test_level_edm.png');
+    edmMusic = loadSound('../Assets/Music/ContraAhSng.mp3');
 
     // Player 
     spritesheet = loadImage('../Assets/Player/red_guy_sheet.png');
@@ -160,7 +161,7 @@ function playLevelMusic() {
             levelMusic = rockMusic;
             break;
         default:
-            levelMusic = menuMusic;
+            levelMusic = edmMusic;
             break;
     }
     levelMusic.play();
