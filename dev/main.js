@@ -18,8 +18,8 @@ let levelRender = 'menu';
 let paused = false;
 
 // Set Screen size
-const CANVAS_HEIGHT = 375;
-const CANVAS_WIDTH = 500;
+const CANVAS_HEIGHT = 1500 / 2.5;
+const CANVAS_WIDTH = 2000 / 2.5;
 
 // p5 sound object for playing in-game music
 // See: https://p5js.org/reference/p5.sound/
