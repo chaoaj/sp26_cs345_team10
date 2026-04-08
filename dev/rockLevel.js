@@ -19,7 +19,7 @@ function spawnBaddies(count) {
     } else {
       random_y = random(CANVAS_HEIGHT + 20, CANVAS_HEIGHT + 50); // this one they spawn at the bottom
     }
-    enemies.push(new Enemy(random_x, random_y, player_1.x, player_1.y, runnerData, runnerSheet, 0.1, 3));
+    enemies.push(new Grunt(random_x, random_y, player_1.x, player_1.y, runnerData, runnerSheet, 0.1, 3));
   }
 }
 
