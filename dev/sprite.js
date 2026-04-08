@@ -15,15 +15,35 @@ class Sprite {
             this.height = pos.h
         }
         this.speed = speed;
-        this.len = this.animation.length;
+        this.len = this.animation.length; // Number of frames in the sprite-sheet
         this.index = 0;
     }
     
+    /**
+     * Renders the sprite. 
+     */
     show(x, y) {
         let index = floor(this.index) % this.len;
         image(this.animation[index], x, y, 40, 40);
     }
+    
+    /**
+     * Renders every frame except the last.
+     * Useful for when the last sprite is special, like when the enemy is taking damage.
+     */
+    showAllButLast(x, y) {
+        let index = floor(this.index) % this.len;
+        if (index == this.len - 1) {
+            // Reach second to last frame, reset index to 0;
+            index = 0;
+        } 
+        image(this.animation[index], x, y, 40, 40);
 
+    }
+
+    /**
+     * Increment index to display different frames in show()
+     */
     animate() {
         this.index += this.speed
     }

@@ -1,6 +1,6 @@
 class Projectile {
     constructor(x, y, targetX, targetY, playType) {
-    this.playType = playType // string 
+    this.playType = playType // string that determines the type of projectile being shot 
     this.pos = createVector(x, y); // Calculate direction vector
     this.vel = createVector(targetX - x, targetY - y);
     this.vel.setMag(8); // Speed
@@ -20,6 +20,7 @@ class Projectile {
     }
 
     display() {
+        // Player bullets
         if (this.playType == "player") {
             fill(255);
             noStroke();
@@ -27,12 +28,44 @@ class Projectile {
             
             let angle = atan2(this.vel.y, this.vel.x);
             let spriteIndex = Math.floor(millis() / 100) % 2;
-            let sourceX = spriteIndex * 90;
+
+            // Get the frame position from json
+            let frame = bulletData.frames[spriteIndex].position;
+
+            push();
+            translate(this.pos.x, this.pos.y);
+            rotate(angle);
+            image(
+                bullet,             // Actual sprite sheet file 
+                0, 0,               // dx, dy: Coordinates to draw image onto canvas 
+                30, 20,             // dWidth, dHeight: How large it draws onto the canvas
+                frame.x, frame.y,   // sx, xy: Where to start cropping on the sprite sheet
+                frame.w, frame.h    // sWidth, sHeight: Exact width and height to crop from sprite sheet
+            );
+            pop();
+        }
+        // Rock shooter projectiles, uses fireball sprite
+        if (this.playType == "rockShooter") {
+            fill(255);
+            noStroke();
+            ellipse(this.pos.x, this.pos.y, 20, 20);
+            
+            let angle = atan2(this.vel.y, this.vel.x);
+            let spriteIndex = Math.floor(millis() / 100) % 2;
+
+            // Get the frame position from json
+            let frame = fireballData.frames[spriteIndex].position;
             
             push();
             translate(this.pos.x, this.pos.y);
             rotate(angle);
-            image(bullet, 0, 0, 30, 20, sourceX, 0, 90, 55);
+            image(
+                fireballSheet,      // Actual sprite sheet file 
+                0, 0,               // dx, dy: Coordinates to draw image onto canvas 
+                20, 28,             // dWidth, dHeight: How large it draws onto the canvas
+                frame.x, frame.y,   // sx, xy: Where to start cropping on the sprite sheet
+                frame.w, frame.h    // sWidth, sHeight: Exact width and height to crop from sprite sheet
+            );
             pop();
         }
     }
@@ -48,6 +81,11 @@ class Projectile {
             return true;
         }
         return false;
+    }
+
+    // Returns the type of the projectile
+    getPlayType() {
+        return this.playType;
     }
 
     /*

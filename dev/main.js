@@ -30,8 +30,10 @@ var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
 var metal_back, rockMusic;
 var edm_back;
-var spritesheet, spriteData, bullet;
-var runnerSheet, runnerData
+var spritesheet, spriteData, bullet, bulletData;
+var runnerSheet, runnerData; // Edm grunt
+var big_bassSheet, big_bassData; // Edm Bomber
+var fireballSheet, fireballData; // Fireball projectiles
 
 let enemies = [];
 
@@ -66,10 +68,15 @@ function preload() {
     spritesheet = loadImage('../Assets/Player/red_guy_sheet.png');
     spriteData = loadJSON('../Assets/Player/redguy.json')
     bullet = loadImage('../Assets/Projectiles/bullet.png')
+    bulletData = loadJSON('../Assets/Projectiles/bullet.json')
 
     // Enemey
-    runnerSheet = loadImage('../Assets/Enemies/vinyl_runner.png')
-    runnerData = loadJSON('../Assets/Enemies/vinyl_runner.json')
+    runnerSheet = loadImage('../Assets/Enemies/vinyl_runner.png');
+    runnerData = loadJSON('../Assets/Enemies/vinyl_runner.json');
+    big_bassSheet = loadImage('../Assets/Enemies/big_bass.png');
+    big_bassData = loadJSON('../Assets/Enemies/big_bass.json');
+    fireballSheet = loadImage('../Assets/Projectiles/fireball.png')
+    fireballData = loadJSON('../Assets/Projectiles/fireball.json')
 }
 
 function setup() {
@@ -99,6 +106,9 @@ function draw() {
     if (levelRender != 'menu' && paused) {
         pauseMenuDraw();
     }
+
+    // FPS Counter 
+    fpsCounter();
 }
 
 
@@ -166,4 +176,28 @@ function playLevelMusic() {
     levelMusic.play();
     levelMusic.setVolume(0.3); // change the volume between 0.0 and 1.0 if needed
     userStartAudio();
+}
+
+/**
+ * LLM-Generated FPS Counter
+ * Tracks the number of frames drawn every second
+ * https://p5js.org/reference/p5/frameRate/
+ */
+function fpsCounter() {
+    let currentFps = frameRate(); // Get the current framerate from p5.js
+    
+    push(); // Save current drawing style settings
+    
+    // Styling for the FPS text
+    fill(0, 255, 0); // Bright green text
+    noStroke();
+    textSize(20);
+    textAlign(LEFT, TOP);
+    textFont('Courier New'); // Monospace font keeps the text from jittering width-wise
+    
+    // Draw the text in the top-left corner
+    // .toFixed(1) rounds the number to 1 decimal place (e.g., 60.0)
+    text(currentFps.toFixed(1), 10, 10); 
+    
+    pop(); // Restore previous drawing style settings so we don't mess up other renders
 }

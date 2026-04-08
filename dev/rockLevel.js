@@ -11,7 +11,7 @@ function rockSetup() {
   enemies = []
 }
 
-function spawnBaddies(count) {
+function spawnRockBaddies(count) {
   for (let i = 0; i < count; i++) {
     let random_x = random(CANVAS_WIDTH); // spawns enemies at random positions near the top and sides
     let random_y;
@@ -21,8 +21,10 @@ function spawnBaddies(count) {
       random_y = random(CANVAS_HEIGHT + 20, CANVAS_HEIGHT + 50); // this one they spawn at the bottom
     }
     enemies.push(new Grunt(random_x, random_y, player_1.x, player_1.y, runnerData, runnerSheet, 0.1, 3));
+    enemies.push(new Shooter(random_x, random_y, player_1.x, player_1.y, big_bassData, big_bassSheet, 0.1, 1.5, 120));
   }
 }
+
 
 function rockDraw() {
   image(metal_back, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -32,7 +34,7 @@ function rockDraw() {
       projectiles[i].update();
 
       for (let j = enemies.length - 1; j >= 0; j--) {
-        if (projectiles[i].checkHit(enemies[j])) {
+        if (projectiles[i].getPlayType() == 'player' && projectiles[i].checkHit(enemies[j])) {
           enemies.splice(j, 1);
           projectiles.splice(i, 1);
           break; // leaves loop because enemy gone
@@ -49,10 +51,10 @@ function rockDraw() {
     }
 
     if (enemies.length === 0 && wave_length != 0) { // infinite enemies mode
-      spawnBaddies(8);
+      spawnRockBaddies(8);
       wave_length--;
     } else {
-      console.log("load boss")
+      // console.log("load boss")
     }
   }
 
