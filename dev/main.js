@@ -18,8 +18,8 @@ let levelRender = 'menu';
 let paused = false;
 
 // Set Screen size
-const CANVAS_HEIGHT = 750;
-const CANVAS_WIDTH = 1000;
+const CANVAS_HEIGHT = 375;
+const CANVAS_WIDTH = 500;
 
 // p5 sound object for playing in-game music
 // See: https://p5js.org/reference/p5.sound/
@@ -141,7 +141,7 @@ function mousePressed() {
     if (paused) {
         return;
     }
-    if (levelRender === 'rock' || levelRender === 'edm') {
+    if (levelRender != "menu") {
         projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
     }
 }
