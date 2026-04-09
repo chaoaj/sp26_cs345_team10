@@ -29,7 +29,8 @@ let levelMusic;
 var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
 var metal_back, rockMusic;
-var edm_back;
+var edm_back, edmMusic;
+var lofi_back, lofiMusic;
 var spritesheet, spriteData, bullet, bulletData;
 var runnerSheet, runnerData; // Edm grunt
 var big_bassSheet, big_bassData; // Edm Bomber
@@ -63,6 +64,11 @@ function preload() {
 
     // EDM level
     edm_back = loadImage('../Assets/Levels/test_level_edm.png');
+    edmMusic = loadSound('../Assets/Music/ContraAhSng.mp3');
+
+    // Lofi level
+    lofi_back = loadImage('../Assets/Levels/test_level_lofi.png')
+    lofiMusic = loadSound('../Assets/Music/PoopMusic.mp3');
 
     // Player 
     spritesheet = loadImage('../Assets/Player/red_guy_sheet.png');
@@ -99,6 +105,8 @@ function draw() {
         case 'edm':
             edmDraw();
             break;
+        case 'lofi':
+            lofiDraw();
         default:
             break;
     }
@@ -126,8 +134,11 @@ function switchLevel(levelName) {
     if (levelName === 'rock') {
         rockSetup();
     }
-    if (levelName == 'edm') { // edm level
+    if (levelName === 'edm') { // edm level
         edmSetup();
+    }
+    if (levelName === 'lofi') {
+        lofiSetup();
     }
     playLevelMusic();
 }
@@ -136,6 +147,9 @@ function keyPressed() {
     pressedKeys[key] = true;
     if (key === 'c') { // added for testing
         switchLevel('edm');
+    }
+    if (key === 'v') { // added for testing
+        switchLevel('lofi');
     }
     if (key == 'Escape' && levelRender != 'menu') {
         // Toggle pausing variable
@@ -169,6 +183,10 @@ function playLevelMusic() {
         case 'rock':
             levelMusic = rockMusic;
             break;
+        case 'edm':
+            levelMusic = edmMusic;
+        case 'lofi':
+            levelMusic = lofiMusic;
         default:
             levelMusic = menuMusic;
             break;
