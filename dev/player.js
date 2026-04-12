@@ -1,5 +1,5 @@
 let player;
-const delay = ms => new Promise(res => setTimeout(res, ms));
+const delay = ms => new Promise(res => setTimeout(res, ms)); // this helps with the delay functions DO NOT REMOVE
 let spriteImages = [];
 let pressedKeys = {};
 
