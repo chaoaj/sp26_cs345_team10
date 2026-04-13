@@ -33,7 +33,7 @@ function spawnBoss() {
   if (boss_spawned === true) {
     return;
   } else {
-    boss.push(new rockBoss(400, 400, player_1.x, player_1.y, 200, dragonJSON, dragonSpriteSheet, 0.1, 0.3, 30, 100))
+    boss.push(new rockBoss(CANVAS_WIDTH - 200, 400, player_1.x, player_1.y, 200, dragonJSON, dragonSpriteSheet, 0.1, 0.3, 30, 10))
   }
 }
 

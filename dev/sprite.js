@@ -72,3 +72,21 @@ class BossSprite extends Sprite {
         this.index += this.speed
     }
 }
+
+class EnemySprite extends Sprite {
+    constructor(spritedata, spritesheet, speed, width, height) {
+        super(spritedata, spritesheet, speed);
+
+        this.width = width;
+        this.height = height;
+    }
+
+    show(x, y) {
+        let index = floor(this.index) % this.len;
+        image(this.animation[index], x, y, this.width, this.height);
+    }
+
+    animate() {
+        this.index += this.speed
+    }
+}
