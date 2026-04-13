@@ -46,7 +46,7 @@ class Grunt extends Enemy {
     constructor(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed) {
         super(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed);
 
-        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 40, 40);
+        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 60, 60);
     }
 
     // Update grunt to follow player each frame
@@ -69,10 +69,11 @@ class Grunt extends Enemy {
 class Shooter extends Enemy {
     // Constructor 
     constructor(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed,
-        shootSpeed, // Sets the shoot speed that that shooter will use to attack the player. Higher = Slower! 
+        shootSpeed // Sets the shoot speed that that shooter will use to attack the player. Higher = Slower! 
     ) {
         super(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed);
-        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 200, 200);
+        this.r = 110;
+        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 100, 130);
         this.shootSpeed = shootSpeed;
 
         // Construct a random angle for random movement
@@ -103,7 +104,7 @@ class Shooter extends Enemy {
             circle(this.pos.x, this.pos.y, 30); // this is currently for testing but works to show collisions
             this.hit = false;
         } else {
-            this.Enemy_ani.showAllButLast(this.pos.x - 20, this.pos.y - 20);
+            this.Enemy_ani.showAllButLast(this.pos.x - 50, this.pos.y - 60); // these positions are dependant on the size of the sprite, change that, change these
             this.Enemy_ani.animate();
         }
     }

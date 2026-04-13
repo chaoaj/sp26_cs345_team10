@@ -89,4 +89,14 @@ class EnemySprite extends Sprite {
     animate() {
         this.index += this.speed
     }
+
+    showAllButLast(x, y) {
+        let index = floor(this.index) % this.len;
+        if (index == this.len - 1) {
+            // Reach second to last frame, reset index to 0;
+            index = 0;
+        } 
+        image(this.animation[index], x, y, this.width, this.height);
+
+    }
 }

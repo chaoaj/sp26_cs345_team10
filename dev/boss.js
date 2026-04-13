@@ -1,4 +1,3 @@
-
 class Boss {
     constructor(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed) {
         this.x = x;
