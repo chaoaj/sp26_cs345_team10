@@ -2,7 +2,7 @@ let projectiles = [];
 let player_x = 200;
 let player_y = 200;
 let player_1;
-var wave_length = 3
+var wave_length = 0
 var boss_spawned = false;
 
 
@@ -73,6 +73,7 @@ function rockDraw() {
             console.log(boss[b].health);
             projectiles.splice(i, 1);
             if (boss[b].health <= 0) {
+              boss[b].is_dead = true;
               boss.splice(b, 1);
             }
             break; // leaves loop because enemy gone

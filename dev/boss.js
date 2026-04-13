@@ -15,6 +15,8 @@ class Boss {
         this.shootSpeed = shootSpeed;
         this.can_hit = true;
         this.is_visible = true;
+        this.is_shooting = false; // this is so the boss doesn't shoot like 1000 bullets every frame
+        this.is_dead = false; // this is so the boss' projectiles stop shooting when dead
 
         this.Boss_anim = new BossSprite(spritedata, spritesheet, Anispeed, r * 2, r * 2);
 
@@ -37,10 +39,7 @@ class rockBoss extends Boss {
 
     update(player) {
         if (!paused) {
-            
-            if ((frameCount + this.shooting) % this.shootSpeed == 0) {
-                projectiles.push(new Projectile(this.pos.x, this.pos.y, player.pos.x, player.pos.y, "rockShooter"));
-            }
+            this.shootToptoBottom(player); // this will start the shooting cycle. the way this works is jank if need be ask me - Kai
         }
     }
 
@@ -62,11 +61,56 @@ class rockBoss extends Boss {
     }
 
     async blink() { // this makes the boss blink when invincible
-    for (let i = 0; i < 5; i++) { // until 5 because of the 2 delays and 1 second of i frames
-      this.is_visible = false;
-      await delay(100);
-      this.is_visible = true;
-      await delay(100);
+        for (let i = 0; i < 5; i++) { // until 5 because of the 2 delays and 1 second of i frames
+            this.is_visible = false;
+            await delay(100);
+            this.is_visible = true;
+            await delay(100);
+        }
     }
-  }
+
+    async shootToptoBottom(player) {
+        let bottom = CANVAS_HEIGHT - 150; // this stops around the lower 1/4 of the screen
+        if (this.is_shooting) {
+            return;
+        }
+        this.is_shooting = true;
+        for (let i = 0; i <= bottom; i += 50) {
+            projectiles.push(new Projectile(this.pos.x, this.pos.y, player.pos.x, i, "rockShooter"));
+            await delay(100);
+        }
+        await delay(2000); // 2 second delay;
+        this.is_shooting = false;
+        this.shootBottomtoTop(player);
+    }
+
+    async shootBottomtoTop(player) {
+        let top = 150;
+        if (this.is_shooting) {
+            return;
+        }
+        this.is_shooting = true;
+        for (let i = CANVAS_HEIGHT; i >= top; i -= 50) {
+            projectiles.push(new Projectile(this.pos.x, this.pos.y, player.pos.x, i, "rockShooter"));
+            await delay(100);
+        }
+        await delay(2000)
+        this.is_shooting = false;
+        this.shootCenter(player);
+    }
+
+    async shootCenter(player) {
+        let center_top = (CANVAS_HEIGHT / 2) - 150;
+        let center_bottom = (CANVAS_HEIGHT / 2) + 250;
+        if (this.is_shooting) {
+            return;
+        }
+        this.is_shooting = true;
+        for (let i = center_top; i <= center_bottom; i += 20) {
+            projectiles.push(new Projectile(this.pos.x, this.pos.y, player.pos.x, i, "rockShooter"));
+            await delay(50);
+        }
+        await delay(2000);
+        this.is_shooting = false;
+    }
 }
