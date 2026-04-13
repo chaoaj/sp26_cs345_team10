@@ -82,7 +82,7 @@ function preload() {
 
     // Metal level
     metal_back = loadImage('../Assets/Levels/Test_Level_Lava.png');
-    rockMusic = loadSound('../Assets/Music/Terrible_Placeholder_Music.mp3');
+    rockMusic = loadSound('../Assets/Music/RockLevelMusic.mp3');
     dragonJSON = loadJSON('../Assets/Bosses/guitar_dragon_boss.json');
     dragonSpriteSheet = loadImage('../Assets/Bosses/guitar_dragon_boss.png');
 
