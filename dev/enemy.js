@@ -3,7 +3,7 @@
  * Generic Enemy Type
  */
 class Enemy {
-    constructor(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed) {
+    constructor(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed, width, height) {
         this.x = x;
         this.y = y;
         this.target_x = target_x;
@@ -15,7 +15,7 @@ class Enemy {
         this.r = 30; // this is for collision detection, bascially an invisible hitbox
         this.moveSpeed = moveSpeed;
 
-        this.Enemy_ani = new Sprite(spritedata, spritesheet, Anispeed);
+        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, width, height);
 
         this.w = this.Enemy_ani.width;
         this.h = this.Enemy_ani.height;
@@ -45,6 +45,8 @@ class Grunt extends Enemy {
     // Constructor
     constructor(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed) {
         super(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed);
+
+        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 40, 40);
     }
 
     // Update grunt to follow player each frame
@@ -70,6 +72,7 @@ class Shooter extends Enemy {
         shootSpeed, // Sets the shoot speed that that shooter will use to attack the player. Higher = Slower! 
     ) {
         super(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed);
+        this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 200, 200);
         this.shootSpeed = shootSpeed;
 
         // Construct a random angle for random movement
@@ -80,6 +83,8 @@ class Shooter extends Enemy {
         // Create a random number to randomize the shooting interval between shooter enemies
         // Number is between 0 and shootSpeed
         this.shootSeed = Math.floor(Math.random() * shootSpeed);
+
+        
     }
 
     // Update Shooter each frame
