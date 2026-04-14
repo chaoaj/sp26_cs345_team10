@@ -1,0 +1,3 @@
+
+# Sprint 3 goals
+We plan on finishing all core game mechanics including the health point system, player invincibility frames, enemy shooting mechanics, boss shooting and health mechanics, level swapping, and final sprites for the first level and items. The player will also have a gun that swivels around their character towards the mouse. Our discord server has been our primary form of communication and all team members have been active in both communication and development of the game, so we foresee no immediate setbacks. 
