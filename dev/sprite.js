@@ -22,23 +22,38 @@ class Sprite {
     /**
      * Renders the sprite. 
      */
-    show(x, y) {
+    show(x, y, facingLeft = false) {
         let index = floor(this.index) % this.len;
-        image(this.animation[index], x, y, 40, 40);
+        if (facingLeft) {
+            push();
+            translate(x + 20, y + 20);
+            scale(-1, 1);
+            image(this.animation[index], -20, -20, 40, 40);
+            pop();
+        } else {
+            image(this.animation[index], x, y, 40, 40);
+        }
     }
     
     /**
      * Renders every frame except the last.
      * Useful for when the last sprite is special, like when the enemy is taking damage.
      */
-    showAllButLast(x, y) {
+    showAllButLast(x, y, facingLeft = false) {
         let index = floor(this.index) % this.len;
         if (index == this.len - 1) {
             // Reach second to last frame, reset index to 0;
             index = 0;
-        } 
-        image(this.animation[index], x, y, 40, 40);
-
+        }
+        if (facingLeft) {
+            push();
+            translate(x + 20, y + 20);
+            scale(-1, 1);
+            image(this.animation[index], -20, -20, 40, 40);
+            pop();
+        } else {
+            image(this.animation[index], x, y, 40, 40);
+        }
     }
 
     /**
@@ -63,9 +78,22 @@ class BossSprite extends Sprite {
         this.height = height;
     }
 
-    show(x, y) {
+    show(x, y, facingLeft = false) {
         let index = floor(this.index) % this.len;
-        image(this.animation[index], x, y, this.width, this.height);
+        let isLastFrame = (index == this.len - 1);
+        let width = isLastFrame ? 695 : 440;
+        let height = 600;
+        let xOffset = isLastFrame ? -255 : 0;
+        
+        if (facingLeft) {
+            push();
+            translate(x + xOffset + width / 2, y + height / 2);
+            scale(-1, 1);
+            image(this.animation[index], -width / 2, -height / 2, width, height);
+            pop();
+        } else {
+            image(this.animation[index], x + xOffset, y, width, height);
+        }
     }
 
     animate() {
@@ -81,22 +109,37 @@ class EnemySprite extends Sprite {
         this.height = height;
     }
 
-    show(x, y) {
+    show(x, y, facingLeft = false) {
         let index = floor(this.index) % this.len;
-        image(this.animation[index], x, y, this.width, this.height);
+        if (facingLeft) {
+            push();
+            translate(x + this.width / 2, y + this.height / 2);
+            scale(-1, 1);
+            image(this.animation[index], -this.width / 2, -this.height / 2, this.width, this.height);
+            pop();
+        } else {
+            image(this.animation[index], x, y, this.width, this.height);
+        }
     }
 
     animate() {
         this.index += this.speed
     }
 
-    showAllButLast(x, y) {
+    showAllButLast(x, y, facingLeft = false) {
         let index = floor(this.index) % this.len;
         if (index == this.len - 1) {
             // Reach second to last frame, reset index to 0;
             index = 0;
-        } 
-        image(this.animation[index], x, y, this.width, this.height);
-
+        }
+        if (facingLeft) {
+            push();
+            translate(x + this.width / 2, y + this.height / 2);
+            scale(-1, 1);
+            image(this.animation[index], -this.width / 2, -this.height / 2, this.width, this.height);
+            pop();
+        } else {
+            image(this.animation[index], x, y, this.width, this.height);
+        }
     }
 }

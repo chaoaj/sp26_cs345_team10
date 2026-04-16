@@ -53,6 +53,9 @@ function edmDraw() {
         if (player_1.health <= 0) {
           gameOver = true;
         }
+        if (enemies[i] instanceof Grunt) {
+          enemies[i].knockback();
+        }
       }
     }
 

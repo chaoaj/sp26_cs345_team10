@@ -23,6 +23,7 @@ class Enemy {
         this.pos = createVector(x, y);
         this.vel = createVector(target_x - x, target_y - y);
         this.vel.setMag(moveSpeed); // Speed
+        this.facingLeft = false;
   }
 
     draw() {
@@ -31,7 +32,7 @@ class Enemy {
             circle(this.pos.x, this.pos.y, 30); // this is currently for testing but works to show collisions
             this.hit = false;
         } else {
-            this.Enemy_ani.show(this.pos.x - 20, this.pos.y - 20);
+            this.Enemy_ani.show(this.pos.x - 20, this.pos.y - 20, this.facingLeft);
             this.Enemy_ani.animate();
         }
     }
@@ -47,6 +48,7 @@ class Grunt extends Enemy {
         super(x, y, target_x, target_y, spritedata, spritesheet, Anispeed, moveSpeed);
 
         this.Enemy_ani = new EnemySprite(spritedata, spritesheet, Anispeed, 60, 60);
+        this.knockbackDirection = null;
     }
 
     // Update grunt to follow player each frame
@@ -55,9 +57,35 @@ class Grunt extends Enemy {
     
         direction.setMag(this.moveSpeed); // change this to make the guy move faster
         
+        // update left/right direction
+        if (direction.x < 0) {
+            this.facingLeft = true;
+        } else if (direction.x > 0) {
+            this.facingLeft = false;
+        }
+        
         // Stop enemy from moving when game is paused
         if (!paused) {
-            this.pos.add(direction);
+            if (this.knockbackDirection) {
+                this.pos.add(this.knockbackDirection);
+            } else {
+                this.pos.add(direction);
+            }
+        }
+    }
+
+    knockback() {
+        if (!this.knockbackDirection) {
+            let directionToPlayer = createVector(0, 0);
+            if (typeof player_1 !== "undefined" && player_1) {
+                directionToPlayer = createVector(player_1.pos.x - this.pos.x, player_1.pos.y - this.pos.y);
+            }
+            this.knockbackDirection = directionToPlayer.copy().mult(-1).setMag(this.moveSpeed * 35); //change the number at the end for how far the knockback goes
+            
+            // stop knockback after a frame
+            setTimeout(() => {
+                this.knockbackDirection = null;
+            }, 1000 / frameRate());
         }
     }
 }
@@ -104,7 +132,7 @@ class Shooter extends Enemy {
             circle(this.pos.x, this.pos.y, 30); // this is currently for testing but works to show collisions
             this.hit = false;
         } else {
-            this.Enemy_ani.showAllButLast(this.pos.x - 50, this.pos.y - 60); // these positions are dependant on the size of the sprite, change that, change these
+            this.Enemy_ani.showAllButLast(this.pos.x - 50, this.pos.y - 60, this.facingLeft); // these positions are dependant on the size of the sprite, change that, change these
             this.Enemy_ani.animate();
         }
     }
@@ -161,6 +189,13 @@ class Shooter extends Enemy {
 
         // Update angle to match bounded direction
         this.wanderAngle = moveDirection.heading();
+
+        // update left/right direction
+        if (moveDirection.x < 0) {
+            this.facingLeft = true;
+        } else if (moveDirection.x > 0) {
+            this.facingLeft = false;
+        }
 
         // Apply the movement
         moveDirection.setMag(this.moveSpeed);

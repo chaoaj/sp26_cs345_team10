@@ -22,6 +22,7 @@ class Player {
     
     this.speed = 4;
     this.pos = createVector(x, y); // this is for tracking for the enemies and bosses and moving
+    this.facingLeft = false;
   }
   
   update() {
@@ -66,6 +67,12 @@ class Player {
     
     if (mvmt.mag() > 0) {
       mvmt.setMag(this.speed);
+      // update left/right direction
+      if (mvmt.x < 0) {
+        this.facingLeft = true;
+      } else if (mvmt.x > 0) {
+        this.facingLeft = false;
+      }
     }
     
     this.x += mvmt.x;
@@ -79,7 +86,7 @@ class Player {
   
   draw() {
     if (this.is_visible === true) {
-      this.player_ani.show(this.x - 20, this.y - 20); // temporary fix probably should change properly
+      this.player_ani.show(this.x - 20, this.y - 20, this.facingLeft);
       this.player_ani.animate();
       // Aim gun with the right stick when available, otherwise use the mouse.
       let aimX = mouseX - this.pos.x;

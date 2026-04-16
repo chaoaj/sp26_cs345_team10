@@ -53,6 +53,9 @@ function lofiDraw() {
         if (player_1.health <= 0) {
           gameOver = true;
         }
+        if (enemies[i] instanceof Grunt) {
+          enemies[i].knockback();
+        }
       }
     }
 
@@ -69,6 +72,5 @@ function lofiDraw() {
     enemies[i].draw();
   }
   
-  // Display health bar
   displayHealthBar(player_1);
 }
