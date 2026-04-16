@@ -121,12 +121,18 @@ function rockDraw() {
       enemies[i].update(player_1);
       
       let distance = dist(enemies[i].pos.x, enemies[i].pos.y, player_1.pos.x, player_1.pos.y);
-      if (distance < enemies[i].r + player_1.r && player_1.can_hit == true) {
-        player_1.health--;
-        player_1.invincible();
-        console.log(player_1.health); // this is for testing to make sure health is going down correctly
-        if (player_1.health <= 0) {
-          gameOver = true;
+      if (distance < enemies[i].r + player_1.r) {
+        if (enemies[i] instanceof Grunt) {
+          enemies[i].knockback();
+        }
+        
+        if (player_1.can_hit == true) {
+          player_1.health--;
+          player_1.invincible();
+          console.log(player_1.health); // this is for testing to make sure health is going down correctly
+          if (player_1.health <= 0) {
+            gameOver = true;
+          }
         }
       }
     }
