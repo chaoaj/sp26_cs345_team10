@@ -32,8 +32,8 @@ class rockBoss extends Boss {
     constructor(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed) {
         super(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed)
 
-        this.wanderAngle = random(TWO_PI);
-        this.shooting = Math.floor(Math.random() * shootSpeed);
+        //this.wanderAngle = random(TWO_PI);
+        //this.shooting = Math.floor(Math.random() * shootSpeed);
     }
 
     update(player) {
@@ -132,8 +132,8 @@ class EDMBoss extends rockBoss {
     constructor(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed) {
         super(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed)
 
-        this.wanderAngle = random(TWO_PI);
-        this.shooting = Math.floor(Math.random() * shootSpeed);
+        //this.wanderAngle = random(TWO_PI);
+        //this.shooting = Math.floor(Math.random() * shootSpeed);
     }
 }
 
@@ -141,7 +141,7 @@ class LofiBoss extends rockBoss {
     constructor(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed) {
         super(x, y, target_x, target_y, r, spritedata, spritesheet, Anispeed, moveSpeed, health, shootSpeed)
 
-        this.wanderAngle = random(TWO_PI);
-        this.shooting = Math.floor(Math.random() * shootSpeed);
+        //this.wanderAngle = random(TWO_PI);
+        //this.shooting = Math.floor(Math.random() * shootSpeed);
     }
 }
