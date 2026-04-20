@@ -133,6 +133,9 @@ function preload() {
     eleExplodeData = loadJSON('../Assets/element_explosion.json');    
 
     // Guns
+    pistolSprite = loadImage('../Assets/Weapons/pistol.png')
+    laserSprite = loadImage('../Assets/Weapons/beat_laser.png')
+    discThrowerSprite = loadImage('../Assets/Weapons/disc_thrower.png')
     shotgunSprite = loadImage('../Assets/Weapons/shotgun.png')
     
     // Health Bar

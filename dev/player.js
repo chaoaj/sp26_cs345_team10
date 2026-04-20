@@ -103,7 +103,7 @@ class Player {
       push();
       translate(this.pos.x, this.pos.y);
       rotate(angle);
-      image(shotgunSprite, 0, 0, 50, 28); 
+      image(pistolSprite, 0, 0, 50, 28); 
       pop();
     }
   }
