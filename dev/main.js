@@ -90,7 +90,7 @@ let items = [];
 const PLAYER_FIRE_INTERVAL_MS = 150;
 let lastPlayerFireAt = 0;
 let laserCooldown = 0;
-const LASER_DURATION = 60; 
+const LASER_DURATION = 300; 
 let firePending = false;
 
 /** In-game settings (gear) button state. */
