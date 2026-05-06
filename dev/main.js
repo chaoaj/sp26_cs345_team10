@@ -90,7 +90,7 @@ let items = [];
 const PLAYER_FIRE_INTERVAL_MS = 150;
 let lastPlayerFireAt = 0;
 let laserCooldown = 0;
-const LASER_DURATION = 60; 
+const LASER_DURATION = 300; 
 let firePending = false;
 
 /** In-game settings (gear) button state. */
@@ -265,6 +265,7 @@ function preload() {
     waveClearSFX = loadSound('../Assets/SFX/sfx_waveclear.ogg');
     selectSFX = loadSound('../Assets/SFX/sfx_select.ogg');
     toggleSFX = loadSound('../Assets/SFX/sfx_toggle.ogg');
+    rollSFX = loadSound('../Assets/SFX/sfx_roll.ogg');
 }
 
 function setup() {
@@ -529,7 +530,9 @@ function mousePressed() {
     if (paused) {
         return;
     }
-    tryFireMouseProjectile();
+    if (!player.is_entering) {
+        tryFireMouseProjectile();
+    }
 }
 
 function handleHeldFire() {

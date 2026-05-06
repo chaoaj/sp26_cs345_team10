@@ -181,9 +181,11 @@ function lofiDraw() {
           continue;
         } else if (items[i] instanceof PowerUp) {
           if (items[i].getImage() == shieldBox) {
-            player_1.shieldImmunity();
-            items.splice(i, 1);
-            continue;
+            if (!player_1.can_hit == false) {
+              player_1.shieldImmunity();
+              items.splice(i, 1);
+              continue;
+            }
           } else if (items[i].getImage() == shotgunBox) {
             weapon = 1;
             player_1.powerUpTimer = POWERUP_DURATION;
