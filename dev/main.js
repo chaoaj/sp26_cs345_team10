@@ -265,6 +265,7 @@ function preload() {
     waveClearSFX = loadSound('../Assets/SFX/sfx_waveclear.ogg');
     selectSFX = loadSound('../Assets/SFX/sfx_select.ogg');
     toggleSFX = loadSound('../Assets/SFX/sfx_toggle.ogg');
+    rollSFX = loadSound('../Assets/SFX/sfx_roll.ogg');
 }
 
 function setup() {
