@@ -54,27 +54,6 @@ class Player {
             weapon = 0;
         }
     }
-
-    if (this.shield) {
-      let frameH = shieldSheet.height / 2; 
-      let frameW = shieldSheet.width;
-      let frameY = 0; 
-
-      if (this.shieldBlinking) {
-        let blinkRate = 8;
-        frameY = (frameCount % blinkRate < blinkRate / 2) ? 0 : frameH; // alternates between frame 1 and 2
-      }
-
-      push();
-      image(
-        shieldSheet,
-        this.pos.x - frameW / 2,   // center horizontally
-        this.pos.y - frameH / 2,   // center vertically
-        frameW, frameH,             // display size
-        0, frameY, frameW, frameH  // source crop from spritesheet
-      );
-      pop();
-    }
     
     // Player movement
     if (!paused && !this.is_entering && !this.is_exiting) { // Disables player from moving when pause menu is open
@@ -257,6 +236,27 @@ class Player {
         fill(255, 0, 0);
         text((remaining / 1000).toFixed(1), this.pos.x, this.pos.y - 40);
         pop();
+    }
+
+    if (this.shield) {
+      let frameH = shieldSheet.height / 2; 
+      let frameW = shieldSheet.width;
+      let frameY = 0; 
+
+      if (this.shieldBlinking) {
+        let blinkRate = 8;
+        frameY = (frameCount % blinkRate < blinkRate / 2) ? 0 : frameH; // alternates between frame 1 and 2
+      }
+
+      push();
+      image(
+        shieldSheet,
+        this.pos.x - frameW / 2,   // center horizontally
+        this.pos.y - frameH / 2,   // center vertically
+        frameW, frameH,             // display size
+        0, frameY, frameW, frameH  // source crop from spritesheet
+      );
+      pop();
     }
   }
 }
