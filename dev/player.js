@@ -99,7 +99,6 @@ class Player {
           mvmt.y += 1;
         }
       }
-
       
 
       if (keyIsDown(32) && !this.is_rolling) {
