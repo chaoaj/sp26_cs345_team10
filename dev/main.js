@@ -529,7 +529,9 @@ function mousePressed() {
     if (paused) {
         return;
     }
-    tryFireMouseProjectile();
+    if (!player.is_entering) {
+        tryFireMouseProjectile();
+    }
 }
 
 function handleHeldFire() {

@@ -291,6 +291,9 @@ class Player {
   }
 
   async shieldImmunity() {
+    if (this.can_hit = false) {
+      this.can_hit = true;
+    }
     this.can_hit = false;
     this.shield = true;
     this.shieldBlinking = false;
