@@ -74,6 +74,7 @@ var tutorialMusic; // Tutorial background music
 var endScene, endScenePlayer;
 var exitItem, healthBox;
 var rollJSON, rollspritesheet;
+var endMusic;
 
 let enemies = [];
 let boss = [];
@@ -103,7 +104,7 @@ let inGameSettingsHovered = false;
 function preload() {
     // Main menu
     menuBacking = loadImage('../Assets/GUI/menu_lava.png');
-    menuMusic = loadSound('../Assets/Music/RythemizerThemeExtended.mp3'); // change file path when we have the actual menu music
+    menuMusic = loadSound('../Assets/Music/RythemizerThemeExtended.mp3');
     menuLargeBg = loadImage('../Assets/GUI/menu_background.png');
     menuStartButton = [loadImage('../Assets/Buttons/start.png'), loadImage('../Assets/Buttons/start_select.png')];
     menuSettingsButton = [loadImage('../Assets/Buttons/settings.png'), loadImage('../Assets/Buttons/settings_select.png')];
@@ -128,13 +129,13 @@ function preload() {
 
     // EDM level
     edm_back = loadImage('../Assets/Levels/test_level_edm.png');
-    edmMusic = loadSound('../Assets/Music/Game_Audio.wav');
+    edmMusic = loadSound('../Assets/Music/ThatsSoRAVEn.mp3');
     rave_knightJSON = loadJSON('../Assets/Bosses/rave_knight.json');
     rave_knightSheet = loadImage('../Assets/Bosses/rave_knight.png');
 
     // Lofi level
     lofi_back = loadImage('../Assets/Levels/test_level_lofi.png');
-    lofiMusic = loadSound('../Assets/Music/Welcome_to_the_Green_Room.mp3');
+    lofiMusic = loadSound('../Assets/Music/LofiCrapIMadeIn20Minutes.mp3');
     bard_JSON = loadJSON('../Assets/Bosses/vibe_bard.json');
     bard_spriteSheet = loadImage('../Assets/Bosses/vibe_bard.png');
 
@@ -161,6 +162,7 @@ function preload() {
     // End Screen
     endScene = loadImage('../Assets/GUI/end_scene-faster.gif');
     endScenePlayer = loadImage('../Assets/GUI/end_scene_player-faster.gif');
+    endMusic = loadSound('../Assets/Music/EndGameTheme.mp3')
 
     // ------ Enemies ------ 
     // Runner
@@ -570,7 +572,7 @@ function playLevelMusic() {
             levelMusic = lofiMusic;
             break;
         case 'end':
-            levelMusic = edmMusic; // change this to end level music when added
+            levelMusic = endMusic; // change this to end level music when added
             break;
         case 'tutorial':
             levelMusic = tutorialMusic;
