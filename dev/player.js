@@ -165,6 +165,8 @@ class Player {
     this.can_hit = false
     this.roll_animation.index = 0
 
+    playSFX("roll");
+
     await delay(475); //change for duration of roll
 
     this.is_rolling = false
