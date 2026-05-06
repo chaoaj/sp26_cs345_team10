@@ -34,6 +34,11 @@ var tutorialImages = []; // Array to hold tutorial images
 let endMusicPlaying = false;
 let endScreenMouseLock = false;
 
+// Credits screen variables
+let showCredits = false;
+let creditsMouseLock = false;
+let creditsImage;
+
 // Cooldown variable for menus
 let menuCooldownTimer = 0;
 
@@ -51,6 +56,7 @@ let music_volume = 0.3;
 // Assets loaded in preload()
 var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
+var returnMenuButton, creditsButton;
 var metal_back, rockMusic;
 var edm_back, edmMusic;
 var lofi_back, lofiMusic;
@@ -113,6 +119,7 @@ function preload() {
     menuArcadeButton = [loadImage('../Assets/Buttons/arcade.png'), loadImage('../Assets/Buttons/arcade_select.png')];
     menuChaoButton = [loadImage('../Assets/Buttons/chao.png'), loadImage('../Assets/Buttons/chao_select.png')];
     returnMenuButton = [loadImage('../Assets/Buttons/main_menu.png'), loadImage('../Assets/Buttons/main_menu_select.png')];
+    creditsButton = [loadImage('../Assets/Buttons/credits.png'), loadImage('../Assets/Buttons/credits_select.png')];
     menuResumeButton = [loadImage('../Assets/Buttons/resume.png'), loadImage('../Assets/Buttons/resume_select.png')];
     menuLogoGlow = loadImage('../Assets/GUI/logo_glow.png');
     returnMenuLava   = loadImage('../Assets/GUI/return_menu_lava.png');
@@ -245,6 +252,9 @@ function preload() {
     endScene = loadImage('../Assets/GUI/end_scene.gif');
     endScenePlayer = loadImage('../Assets/GUI/end_scene_player.gif');
 
+    // Credits
+    creditsImage = loadImage('../Assets/GUI/credits.png');
+
     // Tutorial music
     tutorialMusic = loadSound('../Assets/Music/The_Four_(five)_Of_Us_Are_dying.mp3');
 
@@ -351,6 +361,9 @@ function draw() {
             break;
         case 'end':
             endScreenDraw();
+            if (showCredits) {
+                drawCreditsScreen();
+            }
             break
         case 'tutorial':
             displayTutorial();
@@ -940,6 +953,72 @@ function drawEndScreenMainMenuButton() {
   }
 
   imageMode(CORNER);
+}
+
+function drawEndScreenCreditsButton() {
+  var w = 240;
+  var h = 60;
+  var x = CANVAS_WIDTH / 2;
+  var y = CANVAS_HEIGHT - 105;
+
+  imageMode(CENTER);
+  image(creditsButton[0], x, y, w, h);
+
+  if (isHovering("end_credits_btn", x, y, w, h)) {
+    image(creditsButton[1], x, y, w, h);
+
+    if (mouseIsPressed && !endScreenMouseLock && millis() > menuCooldownTimer) {
+      menuCooldownTimer = millis() + 500;
+      endScreenMouseLock = true;
+      playSFX("click");
+      showCredits = true;
+    }
+  }
+
+  if (!mouseIsPressed) {
+    endScreenMouseLock = false;
+  }
+
+  imageMode(CORNER);
+}
+
+function drawCreditsScreen() {
+
+  if (typeof creditsImage !== "undefined" && creditsImage) {
+    imageMode(CENTER);
+    image(creditsImage, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH, CANVAS_HEIGHT);
+    imageMode(CORNER);
+  }
+
+  // X close button
+  var size = 50;
+  var x = CANVAS_WIDTH - size - 15;
+  var y = 15;
+  var hovering = mouseX >= x && mouseX <= x + size && mouseY >= y && mouseY <= y + size;
+
+  push();
+  fill(hovering ? color(255, 80, 80) : color(180, 50, 50));
+  stroke(255);
+  strokeWeight(2);
+  rect(x, y, size, size, 6);
+
+  stroke(255);
+  strokeWeight(3);
+  var pad = 13;
+  line(x + pad, y + pad, x + size - pad, y + size - pad);
+  line(x + size - pad, y + pad, x + pad, y + size - pad);
+  pop();
+
+  if (hovering && mouseIsPressed && !creditsMouseLock && millis() > menuCooldownTimer) {
+    menuCooldownTimer = millis() + 500;
+    creditsMouseLock = true;
+    playSFX("click");
+    showCredits = false;
+  }
+
+  if (!mouseIsPressed) {
+    creditsMouseLock = false;
+  }
 }
 
 // Source - https://stackoverflow.com/a/39914235

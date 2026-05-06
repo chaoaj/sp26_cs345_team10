@@ -20,4 +20,5 @@ function endScreenDraw() {
     image(endScenePlayer, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
   drawEndScreenMainMenuButton();
+  drawEndScreenCreditsButton();
 }
