@@ -3,7 +3,9 @@ const delay = ms => new Promise(res => setTimeout(res, ms)); // this helps with 
 let spriteImages = [];
 let pressedKeys = {};
 let weapon = 0;
+let shield;
 let powerUpTimer;
+let spriteIndex;
 const POWERUP_DURATION = 600;
 this.isMoving = false;
 
@@ -15,11 +17,14 @@ class Player {
     this.spritesheet = spritesheet;
     this.Anispeed = Anispeed;
     this.r = 40 // if the scale is changed, change this
-    this.health = 5; 
+    this.health = 5;
+    this.shield = false; 
     this.can_hit = true;
     this.is_visible = true;
     this.is_rolling = false;
     this.powerUpTimer = 0;
+    this.cooldownEndTime = 0;
+    this.roll_cooldown = false;
 
     this.is_entering = true; // true
     this.is_exiting = false;
@@ -37,6 +42,8 @@ class Player {
   
   update() {
     let mvmt = createVector(0, 0);
+
+    let spriteIndex = Math.floor(millis() / 100) % 2;
 
     // Power Up Timer
     if (weapon != 0) {
@@ -71,13 +78,11 @@ class Player {
           mvmt.y += 1;
         }
       }
-
       
 
       if (keyIsDown(32) && !this.is_rolling) {
         console.log("im here")
         this.roll()
-
       }
       
 
@@ -92,6 +97,10 @@ class Player {
         if (pad.right) mvmt.x += 1;
         if (pad.up) mvmt.y -= 1;
         if (pad.down) mvmt.y += 1;
+
+        if (gamepadInput.leftTrigger && !this.is_rolling) {
+          this.roll();
+        }
       }
     }
     
@@ -126,8 +135,8 @@ class Player {
     this.pos.set(this.x, this.y)
   }
 
-  async roll(){  // this method is kinda jank so it might need further testing, only can roll when no i frames are present because it makes it buggy otherwise
-    if (this.is_rolling || !this.can_hit) {
+  async roll(){  // this method is kinda jank so it might need further testing, only can roll when no i frames are present because it makes it buggy otherwise    
+    if (this.is_rolling || !this.can_hit || this.roll_cooldown) {
       return;
     }
 
@@ -135,12 +144,21 @@ class Player {
     this.can_hit = false
     this.roll_animation.index = 0
 
+    playSFX("roll");
+
     await delay(475); //change for duration of roll
 
     this.is_rolling = false
+
     if (this.is_visible) {
       this.can_hit = true
     }
+
+    this.roll_cooldown = true
+    this.cooldownEndTime = millis() + 1000;
+    
+    await delay(1000);
+    this.roll_cooldown = false
   }
 
   
@@ -205,8 +223,43 @@ class Player {
         }
       }
       pop();
+
+      let remaining = this.cooldownEndTime - millis();
+      if (remaining > 0 && !this.is_rolling) {
+        push();
+        textAlign(CENTER);
+        textSize(35);
+        if (typeof pixelFont !== "undefined") textFont(pixelFont);
+        
+        fill(0);
+        text((remaining / 1000).toFixed(1), this.pos.x + 1, this.pos.y - 39); //shadow text
+        fill(255, 0, 0);
+        text((remaining / 1000).toFixed(1), this.pos.x, this.pos.y - 40);
+        pop();
+    }
+
+    if (this.shield) {
+      let frameH = shieldSheet.height / 2; 
+      let frameW = shieldSheet.width;
+      let frameY = 0; 
+
+      if (this.shieldBlinking) {
+        let blinkRate = 8;
+        frameY = (frameCount % blinkRate < blinkRate / 2) ? 0 : frameH; // alternates between frame 1 and 2
+      }
+
+      push();
+      image(
+        shieldSheet,
+        this.pos.x - frameW / 2,   // center horizontally
+        this.pos.y - frameH / 2,   // center vertically
+        frameW, frameH,             // display size
+        0, frameY, frameW, frameH  // source crop from spritesheet
+      );
+      pop();
     }
   }
+}
 
   async blink() { // this makes the character blink when invincible
     for (let i = 0; i < 15; i++) { // until 15 because of the 2 delays and 3 seconds of i frames
@@ -239,10 +292,20 @@ class Player {
   }
 
   async shieldImmunity() {
+    if (this.can_hit = false) {
+      this.can_hit = true;
+    }
     this.can_hit = false;
-    console.log("cant hit me!");
-    // shield animation here
-    await delay(8000); // this is 3 seconds delay, change this and the for loop above to show change in blinking.
+    this.shield = true;
+    this.shieldBlinking = false;
+    console.log("shield active!");
+    
+    await delay(5000); // 5 seconds of solid shield
+    this.shieldBlinking = true; // start blinking
+    await delay(3000); // 3 seconds of blinking before it expires
+    
+    this.shield = false;
+    this.shieldBlinking = false;
     this.can_hit = true;
   }
 

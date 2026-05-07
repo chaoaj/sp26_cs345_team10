@@ -36,6 +36,9 @@ function playSFX(sfx_name) {
         case "click":
             sound = toggleSFX;
             break;
+        case "roll":
+            sound = rollSFX;
+            break;
         default:
             // Sound unrecognized! 
             break;

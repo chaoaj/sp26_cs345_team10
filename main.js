@@ -34,6 +34,11 @@ var tutorialImages = []; // Array to hold tutorial images
 let endMusicPlaying = false;
 let endScreenMouseLock = false;
 
+// Credits screen variables
+let showCredits = false;
+let creditsMouseLock = false;
+let creditsImage;
+
 // Cooldown variable for menus
 let menuCooldownTimer = 0;
 
@@ -51,6 +56,7 @@ let music_volume = 0.3;
 // Assets loaded in preload()
 var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
+var returnMenuButton, creditsButton;
 var metal_back, rockMusic;
 var edm_back, edmMusic;
 var lofi_back, lofiMusic;
@@ -69,10 +75,12 @@ var healthBarSheet, healthBarData; // Health bar display
 var settingsIconSheet, settingsIconData; // In-game gear/settings button (sprite sheet)
 var gameOverImage; // Game over screen image
 var gameOverMusic; // Game over music
+var pixelFont; // 8-bit style pixel font (supersoft.ttf)
 var tutorialMusic; // Tutorial background music
 var endScene, endScenePlayer;
 var exitItem, healthBox;
 var rollJSON, rollspritesheet;
+var endMusic;
 
 let enemies = [];
 let boss = [];
@@ -82,7 +90,7 @@ let items = [];
 const PLAYER_FIRE_INTERVAL_MS = 150;
 let lastPlayerFireAt = 0;
 let laserCooldown = 0;
-const LASER_DURATION = 60; 
+const LASER_DURATION = 300; 
 let firePending = false;
 
 /** In-game settings (gear) button state. */
@@ -102,7 +110,7 @@ let inGameSettingsHovered = false;
 function preload() {
     // Main menu
     menuBacking = loadImage('Assets/GUI/menu_lava.png');
-    menuMusic = loadSound('Assets/Music/RythemizerThemeExtended.mp3'); // change file path when we have the actual menu music
+    menuMusic = loadSound('Assets/Music/RythemizerThemeExtended.mp3');
     menuLargeBg = loadImage('Assets/GUI/menu_background.png');
     menuStartButton = [loadImage('Assets/Buttons/start.png'), loadImage('Assets/Buttons/start_select.png')];
     menuSettingsButton = [loadImage('Assets/Buttons/settings.png'), loadImage('Assets/Buttons/settings_select.png')];
@@ -111,6 +119,7 @@ function preload() {
     menuArcadeButton = [loadImage('Assets/Buttons/arcade.png'), loadImage('Assets/Buttons/arcade_select.png')];
     menuChaoButton = [loadImage('Assets/Buttons/chao.png'), loadImage('Assets/Buttons/chao_select.png')];
     returnMenuButton = [loadImage('Assets/Buttons/main_menu.png'), loadImage('Assets/Buttons/main_menu_select.png')];
+    creditsButton = [loadImage('Assets/Buttons/credits.png'), loadImage('Assets/Buttons/credits_select.png')];
     menuResumeButton = [loadImage('Assets/Buttons/resume.png'), loadImage('Assets/Buttons/resume_select.png')];
     menuLogoGlow = loadImage('Assets/GUI/logo_glow.png');
     returnMenuLava   = loadImage('Assets/GUI/return_menu_lava.png');
@@ -127,13 +136,13 @@ function preload() {
 
     // EDM level
     edm_back = loadImage('Assets/Levels/test_level_edm.png');
-    edmMusic = loadSound('Assets/Music/Game_Audio.wav');
+    edmMusic = loadSound('Assets/Music/ThatsSoRAVEn.mp3');
     rave_knightJSON = loadJSON('Assets/Bosses/rave_knight.json');
     rave_knightSheet = loadImage('Assets/Bosses/rave_knight.png');
 
     // Lofi level
     lofi_back = loadImage('Assets/Levels/test_level_lofi.png');
-    lofiMusic = loadSound('Assets/Music/Welcome_to_the_Green_Room.mp3');
+    lofiMusic = loadSound('Assets/Music/LofiCrapIMadeIn20Minutes.mp3');
     bard_JSON = loadJSON('Assets/Bosses/vibe_bard.json');
     bard_spriteSheet = loadImage('Assets/Bosses/vibe_bard.png');
 
@@ -160,6 +169,7 @@ function preload() {
     // End Screen
     endScene = loadImage('Assets/GUI/end_scene-faster.gif');
     endScenePlayer = loadImage('Assets/GUI/end_scene_player-faster.gif');
+    endMusic = loadSound('Assets/Music/EndGameTheme.mp3')
 
     // ------ Enemies ------ 
     // Runner
@@ -201,6 +211,10 @@ function preload() {
     laserSprite = loadImage('Assets/Weapons/beat_laser.png')
     discThrowerSprite = loadImage('Assets/Weapons/disc_thrower.png')
     shotgunSprite = loadImage('Assets/Weapons/shotgun.png')
+
+    // Shield
+    shieldSheet = loadImage('Assets/Player/shield.png')
+    shieldData = loadJSON('Assets/Player/shield.json')
     
     // Health Bar
     healthBarSheet = loadImage('Assets/GUI/health_bar.png');
@@ -214,6 +228,9 @@ function preload() {
     gameOverImage = loadImage('Assets/GUI/death_screen.png');
     gameOverMusic = loadSound('Assets/Music/29_Ghosts_IV.mp3');
 
+    // Pixel font used for arcade-style overlays (e.g. wave counter)
+    pixelFont = loadFont('Assets/GUI/pixel-font-supersoft-assets/ttf/supersoft.ttf');
+
     // Items
     healthBox = loadImage('Assets/Items/health_box.png');
     shieldBox = loadImage('Assets/Items/shield_box.png');
@@ -222,15 +239,21 @@ function preload() {
     vinylBox = loadImage('Assets/Items/disc_shooter_box.png');
     exitItem = loadImage('Assets/Items/end_story_item.png');
     
-    // Tutorial images
+    // Tutorial images/gif
     tutorialImages[0] = loadImage('Assets/GUI/tutorial_1.png');
     tutorialImages[1] = loadImage('Assets/GUI/tutorial_2.png');
     tutorialImages[2] = loadImage('Assets/GUI/tutorial_3.png');
+    tutorialImages[3] = loadImage('Assets/GUI/tutorial_4.png');
+    tutorialGifCreate = createImg('Assets/GUI/rolling.gif');
+
     
     // End screen gifs
     playerWalking = loadImage('Assets/GUI/player_walking.gif');
     endScene = loadImage('Assets/GUI/end_scene.gif');
     endScenePlayer = loadImage('Assets/GUI/end_scene_player.gif');
+
+    // Credits
+    creditsImage = loadImage('Assets/GUI/credits.png');
 
     // Tutorial music
     tutorialMusic = loadSound('Assets/Music/The_Four_(five)_Of_Us_Are_dying.mp3');
@@ -242,6 +265,7 @@ function preload() {
     waveClearSFX = loadSound('Assets/SFX/sfx_waveclear.ogg');
     selectSFX = loadSound('Assets/SFX/sfx_select.ogg');
     toggleSFX = loadSound('Assets/SFX/sfx_toggle.ogg');
+    rollSFX = loadSound('Assets/SFX/sfx_roll.ogg');
 }
 
 function setup() {
@@ -338,6 +362,9 @@ function draw() {
             break;
         case 'end':
             endScreenDraw();
+            if (showCredits) {
+                drawCreditsScreen();
+            }
             break
         case 'tutorial':
             displayTutorial();
@@ -503,7 +530,9 @@ function mousePressed() {
     if (paused) {
         return;
     }
-    tryFireMouseProjectile();
+    if (!player.is_entering) {
+        tryFireMouseProjectile();
+    }
 }
 
 function handleHeldFire() {
@@ -521,6 +550,10 @@ function tryFireMouseProjectile() {
     }
     // Don't fire when the player is clicking the in-game settings (gear) button.
     if (isMouseOverInGameSettingsButton()) {
+        return;
+    }
+
+    if (player_1.is_entering) {
         return;
     }
 
@@ -555,7 +588,7 @@ function playLevelMusic() {
             levelMusic = lofiMusic;
             break;
         case 'end':
-            levelMusic = edmMusic; // change this to end level music when added
+            levelMusic = endMusic; // change this to end level music when added
             break;
         case 'tutorial':
             levelMusic = tutorialMusic;
@@ -684,12 +717,15 @@ function drawArcadeWavesSurvivedOverlay() {
         return;
     }
     push();
+    if (typeof pixelFont !== "undefined" && pixelFont) {
+        textFont(pixelFont);
+    }
     textAlign(CENTER, CENTER);
-    textSize(28);
+    textSize(64);
     const x = CANVAS_WIDTH / 2;
     const y = CANVAS_HEIGHT / 2 + 55;
     fill(0, 0, 0, 200);
-    text(`Waves survived: ${arcade_waves_survived}`, x + 2, y + 2);
+    text(`Waves survived: ${arcade_waves_survived}`, x + 3, y + 3);
     fill(255, 230, 120);
     text(`Waves survived: ${arcade_waves_survived}`, x, y);
     pop();
@@ -711,6 +747,17 @@ function displayTutorial() {
     const imgY = margin;
     
     if (tutorialImages[tutorialIndex]) {
+        if(tutorialIndex == 3){
+            let canvasElt = document.querySelector('#game-container canvas');
+            let rect = canvasElt.getBoundingClientRect();
+            let scale = rect.width / CANVAS_WIDTH;
+
+            tutorialGifCreate.show();
+            tutorialGifCreate.size(imgWidth * scale/2.5, imgHeight * scale/2.5);
+            tutorialGifCreate.position(rect.x + ((imgX + 50) * scale), rect.y + ((imgY + 175) * scale));
+        } else{
+            tutorialGifCreate.hide();
+        }
         image(tutorialImages[tutorialIndex], imgX, imgY, imgWidth, imgHeight);
     }
     
@@ -737,12 +784,14 @@ function displayTutorial() {
             menuCooldownTimer = millis() + 500;
             tutorialClickFlag = true;
             tutorialIndex++;
+            
         }
     } else {
         drawExitX(rightArrowX, buttonY, buttonSize);
         if (isHoveringButton(rightArrowX, buttonY, buttonSize) && mouseIsPressed && !tutorialClickFlag) {
             menuCooldownTimer = millis() + 500;
             tutorialClickFlag = true;
+            tutorialGifCreate.hide();
             if (showTutorialOverlay) {
                 showTutorialOverlay = false; // ← just hide the overlay, pause menu stays
             } else {
@@ -907,6 +956,72 @@ function drawEndScreenMainMenuButton() {
   }
 
   imageMode(CORNER);
+}
+
+function drawEndScreenCreditsButton() {
+  var w = 240;
+  var h = 60;
+  var x = CANVAS_WIDTH / 2;
+  var y = CANVAS_HEIGHT - 105;
+
+  imageMode(CENTER);
+  image(creditsButton[0], x, y, w, h);
+
+  if (isHovering("end_credits_btn", x, y, w, h)) {
+    image(creditsButton[1], x, y, w, h);
+
+    if (mouseIsPressed && !endScreenMouseLock && millis() > menuCooldownTimer) {
+      menuCooldownTimer = millis() + 500;
+      endScreenMouseLock = true;
+      playSFX("click");
+      showCredits = true;
+    }
+  }
+
+  if (!mouseIsPressed) {
+    endScreenMouseLock = false;
+  }
+
+  imageMode(CORNER);
+}
+
+function drawCreditsScreen() {
+
+  if (typeof creditsImage !== "undefined" && creditsImage) {
+    imageMode(CENTER);
+    image(creditsImage, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH, CANVAS_HEIGHT);
+    imageMode(CORNER);
+  }
+
+  // X close button
+  var size = 50;
+  var x = CANVAS_WIDTH - size - 15;
+  var y = 15;
+  var hovering = mouseX >= x && mouseX <= x + size && mouseY >= y && mouseY <= y + size;
+
+  push();
+  fill(hovering ? color(255, 80, 80) : color(180, 50, 50));
+  stroke(255);
+  strokeWeight(2);
+  rect(x, y, size, size, 6);
+
+  stroke(255);
+  strokeWeight(3);
+  var pad = 13;
+  line(x + pad, y + pad, x + size - pad, y + size - pad);
+  line(x + size - pad, y + pad, x + pad, y + size - pad);
+  pop();
+
+  if (hovering && mouseIsPressed && !creditsMouseLock && millis() > menuCooldownTimer) {
+    menuCooldownTimer = millis() + 500;
+    creditsMouseLock = true;
+    playSFX("click");
+    showCredits = false;
+  }
+
+  if (!mouseIsPressed) {
+    creditsMouseLock = false;
+  }
 }
 
 // Source - https://stackoverflow.com/a/39914235

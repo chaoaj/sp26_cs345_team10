@@ -2,7 +2,10 @@ let projectiles = [];
 let player_x = 200;
 let player_y = -300;
 let player_1;
-const story_wave_length = 3;
+let aimX = 0;
+let aimY = 0;
+const GUN_BARREL_OFFSET = 60; // tweak this to match the pixel distance of the laser and the gun
+const story_wave_length = 5;
 var wave_length = story_wave_length;
 var boss_spawned = false;
 var arcade_wave = 0;
@@ -22,6 +25,9 @@ function rockSetup() {
   enemies = [];
   boss = [];
   items = [];
+  if (game_mode == 'chaos') {
+    wave_length = 0;
+  }
   player_1.powerUpTimer = POWERUP_DURATION;
 }
 
@@ -75,10 +81,15 @@ function getArcadeWaveConfig(waveNumber) {
 function spawnBoss() {
   if (boss_spawned === true) {
     return;
+  } else  if (game_mode === 'story' || game_mode === 'arcade') {
+    let startX = CANVAS_WIDTH + 500; 
+    let targetX = CANVAS_WIDTH - 200;
+    boss.push(new rockBoss(startX, CANVAS_HEIGHT - 450, targetX, player_1.y, 200, dragonJSON, dragonSpriteSheet, 0.1, 0.3, 40, 10))
+    boss_spawned = true;
   } else {
     let startX = CANVAS_WIDTH + 500; 
     let targetX = CANVAS_WIDTH - 200;
-    boss.push(new rockBoss(startX, CANVAS_HEIGHT - 450, targetX, player_1.y, 200, dragonJSON, dragonSpriteSheet, 0.1, 0.3, 30, 10))
+    boss.push(new rockBoss(startX, CANVAS_HEIGHT - 450, targetX, player_1.y, 200, dragonJSON, dragonSpriteSheet, 0.1, 0.3, 1, 10))
     boss_spawned = true;
   }
 }
@@ -93,54 +104,57 @@ function rockDraw() {
    */
 
   player_1.enterScene(); // these two functions handle level transitions
-  if (game_mode === 'story') {
+  if (game_mode === 'story' || game_mode === 'chaos') {
     player_1.leaveScene('end');
   } else {
     player_1.leaveScene('lofi');
   }
 
   if (!paused && !player_1.is_entering) {
+    let aimX = mouseX;
+    let aimY = mouseY;
+    const gp = navigator.getGamepads ? navigator.getGamepads()[0] : null;
+    if (gp && (abs(gp.axes[2]) > 0.1 || abs(gp.axes[3]) > 0.1)) {
+      const aimDist = 200;
+      aimX = player_1.pos.x + gp.axes[2] * aimDist;
+      aimY = player_1.pos.y + gp.axes[3] * aimDist;
+    }
+
     // Updates player position
     player_1.update();
-    if (firePending) {
-    // Calculate angle from player to mouse
-      let angle = atan2(mouseY - player_1.pos.y, mouseX - player_1.pos.x);
-      
-      // Offset the spawn point by gun length along that angle
-      let gunLength = 120 * .50; // adjust this to match where your gun tip visually is
-      let spawnX = player_1.pos.x + cos(angle) * gunLength;
-      let spawnY = player_1.pos.y + sin(angle) * gunLength;
-      
-      projectiles.push(new Projectile(spawnX, spawnY, mouseX, mouseY, "player"));
+    if (firePending) { // Calculate position from the controller aim to the player
+      let angle = atan2(aimY - player_1.pos.y, aimX - player_1.pos.x);
+      let spawnX = player_1.pos.x + cos(angle) * GUN_BARREL_OFFSET;
+      let spawnY = player_1.pos.y + sin(angle) * GUN_BARREL_OFFSET;
+      projectiles.push(new Projectile(spawnX, spawnY, aimX, aimY, "player"));
       firePending = false;
     }
 
     /**
      * Collision checking for all projectiles types
      */
-    for (let i = projectiles.length - 1; i >= 0; i--) { // apparently theres actually a good reason for looping backwards
-       if (weapon == 2 && projectiles[i].getPlayType() === 'player') {
-        let angle = atan2(mouseY - player_1.pos.y, mouseX - player_1.pos.x);
-        let gunLength = 20;
-        projectiles[i].pos.x = player_1.pos.x + cos(angle) * gunLength;
-        projectiles[i].pos.y = player_1.pos.y + sin(angle) * gunLength;
-        projectiles[i].vel = createVector(mouseX - player_1.pos.x, mouseY - player_1.pos.y);
+    for (let i = projectiles.length - 1; i >= 0; i--) {
+      if (weapon == 2 && projectiles[i].getPlayType() === 'player') {
+        // Use aimX/aimY so the laser tracks controller or mouse
+        let angle = atan2(aimY - player_1.pos.y, aimX - player_1.pos.x);
+        projectiles[i].pos.x = player_1.pos.x + cos(angle) * GUN_BARREL_OFFSET;
+        projectiles[i].pos.y = player_1.pos.y + sin(angle) * GUN_BARREL_OFFSET;
+        projectiles[i].vel = createVector(aimX - player_1.pos.x, aimY - player_1.pos.y);
         projectiles[i].vel.setMag(8);
       }
       projectiles[i].update();
 
       if (weapon == 2 && projectiles[i].laserShot && projectiles[i].getPlayType() === 'player') {
         for (let j = enemies.length - 1; j >= 0; j--) {
-          // Check if enemy falls anywhere along the laser line
           let d = distToSegment(
-              enemies[j].pos.x, enemies[j].pos.y,
-              player_1.pos.x, player_1.pos.y,
-              player_1.pos.x + projectiles[i].vel.x * 50,  // extend beam forward
-              player_1.pos.y + projectiles[i].vel.y * 50
+            enemies[j].pos.x, enemies[j].pos.y,
+            player_1.pos.x, player_1.pos.y,
+            player_1.pos.x + projectiles[i].vel.x * 50,
+            player_1.pos.y + projectiles[i].vel.y * 50
           );
           if (d < enemies[j].r) {
-              enemies[j].hit = true;
-              enemies.splice(j, 1);
+            enemies[j].hit = true;
+            enemies.splice(j, 1);
           }
         }
       }
@@ -154,10 +168,17 @@ function rockDraw() {
           } else {
             let rand = random(15); // around 10 percent chance of spawning
             console.log(rand)
-            if (rand <= 1.5) {
-              items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
-            } else if (rand > 14) {
-              items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+            if (random(1) < 0.3) {
+              let itemRoll = random(4);
+              if (itemRoll < 1) {
+                items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
+              } else if (itemRoll < 2) {
+                items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+              } else if (itemRoll < 3) {
+                items.push(new PowerUp(shieldBox, enemies[j].pos.x, enemies[j].pos.y));
+              } else {
+                items.push(new PowerUp(laserBox, enemies[j].pos.x, enemies[j].pos.y));
+              }
             }
             // Play SFX for when enemy dies
             playSFX("enemyGone");
@@ -196,7 +217,7 @@ function rockDraw() {
             projectiles.splice(i, 1);
             if (boss[b].health <= 0) {
               boss[b].is_dead = true;
-              if (game_mode == 'story') {
+              if (game_mode == 'story' || game_mode == 'chaos') {
                 items.push(new ExitItem(exitItem, boss[b].pos.x, boss[b].pos.y)); // spawns the new exit level item
               }
               if (game_mode == 'arcade') {
@@ -261,27 +282,37 @@ function rockDraw() {
           player_1.increaseHealth();
           healthIndex++;
           items.splice(i, 1);
-        }
-        if (items[i] instanceof PowerUp) {
+          continue;
+        } else if (items[i] instanceof PowerUp) {
           if (items[i].getImage() == shieldBox) {
-            player_1.shieldImmunity();
-            items.splice(i, 1);
+            if (!player_1.can_hit == false) {
+              player_1.shieldImmunity();
+              items.splice(i, 1);
+              continue;
+            }
           }
           if (items[i].getImage() == shotgunBox) {
             weapon = 1;
             player_1.powerUpTimer = POWERUP_DURATION;
             items.splice(i, 1);
+            continue;
           }
-        }
-        if (items[i] instanceof ExitItem && game_mode == 'story') {
-          player_1.is_exiting = true; // starts the leave animation
-          items.splice(i, 1);
-        }
-        if (items[i] instanceof ExitItem && game_mode == 'arcade') {
-          player_1.is_exiting = true; // starts the leave animation
+          if (items[i].getImage() == laserBox) {
+            weapon = 2;
+            player_1.powerUpTimer = POWERUP_DURATION;
+            items.splice(i, 1);
+            continue;
+          }
+        } else if (items[i] instanceof ExitItem && game_mode == 'arcade') {
+          player_1.is_exiting = true;
           weapon = 1;
           player_1.powerUpTimer = POWERUP_DURATION;
           items.splice(i, 1);
+          continue;
+        } else if (items[i] instanceof ExitItem && game_mode == 'story' || game_mode == 'chaos') {
+          player_1.is_exiting = true; // starts the leave animation
+          items.splice(i, 1);
+          continue;
         }
       }
 

@@ -4,7 +4,7 @@ var lofi_boss_spawned;
 function lofiSetup() {
   gameOver = false;
   gameOverMusicPlaying = false;
-  lofi_wave_length = 2;
+  lofi_wave_length = 3;
   lofi_boss_spawned = false;
   player_1 = new Player(player_x, player_y, spriteData, spritesheet, 0.1);
   projectiles = [];
@@ -13,6 +13,9 @@ function lofiSetup() {
   items = [];
   if (game_mode == 'story') {
     weapon = 0;
+  }
+  if (game_mode == 'chaos') {
+    lofi_wave_length = 0;
   }
   player_1.powerUpTimer = POWERUP_DURATION;
 }
@@ -28,17 +31,21 @@ function spawnLofiBaddies(count) {
     }
     enemies.push(new Grunt(random_x, random_y, player_1.x, player_1.y, pedal_floaterData, pedal_floaterSheet, 0.1, 3, 30));
     enemies.push(new Shooter(random_x, random_y, player_1.x, player_1.y, cat_riderData, cat_riderSheet, 0.1, 1.5, 100, 230 * 0.65, 125 * 0.65)); // change the multiplier to resize
-    //enemies.push(new Bomber(random_x, random_y, player_1.x, player_1.y, amp_smallData, amp_smallSheet, 0.1, 1.5, 120, 100));
   }
 }
 
 function spawnBossLofi() {
   if (lofi_boss_spawned === true) {
     return;
-  } else {
+  } else  if (game_mode === 'story' || game_mode === 'arcade') {
     let startX = CANVAS_WIDTH + 500; 
     let targetX = CANVAS_WIDTH - 200;
     boss.push(new LofiBoss(startX, CANVAS_HEIGHT - 400, targetX, player_1.y, 200, bard_JSON, bard_spriteSheet, 0.1, 0.3, 30, 10))
+    lofi_boss_spawned = true;
+  } else {
+    let startX = CANVAS_WIDTH + 500; 
+    let targetX = CANVAS_WIDTH - 200;
+    boss.push(new LofiBoss(startX, CANVAS_HEIGHT - 400, targetX, player_1.y, 200, bard_JSON, bard_spriteSheet, 0.1, 0.3, 1, 10))
     lofi_boss_spawned = true;
   }
 }
@@ -52,7 +59,7 @@ function lofiDraw() {
   if (!paused && !player_1.is_entering) {
     player_1.update();
 
-    if (firePending) {
+    if (firePending && !player_1.is_entering) {
       projectiles.push(new Projectile(player_1.x, player_1.y, mouseX, mouseY, "player"));
       firePending = false;
     }
@@ -66,11 +73,15 @@ function lofiDraw() {
           if (enemies[j] instanceof Bomber) {
             enemies[j].explode();
           } else {
-            let rand = random(5); // around 10 percent chance of spawning
-            if (rand <= 1.5) {
-              items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
-            } else if (rand > 14) {
-              items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+            if (random(1) < 0.3) {
+              let itemRoll = random(3);
+              if (itemRoll < 1) {
+                items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
+              } else if (itemRoll < 2) {
+                items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+              } else {
+                items.push(new PowerUp(shieldBox, enemies[j].pos.x, enemies[j].pos.y));
+              }
             }
             playSFX("enemyGone");
             enemies.splice(j, 1);
@@ -79,7 +90,7 @@ function lofiDraw() {
           break; // leaves loop because enemy gone
         }
 
-        if (projectiles[i].checkHit(player_1) && projectiles[i].getPlayType() == "rockShooter" && player_1.can_hit == true) { // this detects hits on the player
+        if (projectiles[i] && projectiles[i].checkHit(player_1) && (projectiles[i].getPlayType() == "lofiBoss" || projectiles[i].getPlayType() == "rockShooter") && player_1.can_hit == true) { // this detects hits on the player
           player_1.health--;
           player_1.invincible();
           console.log(player_1.health);
@@ -101,6 +112,7 @@ function lofiDraw() {
               playSFX("bossHurt");
 
               boss[b].health--;
+              //console.log(boss[b].health)
               boss[b].invincible();
             }
             console.log(boss[b].health);
@@ -112,17 +124,16 @@ function lofiDraw() {
             }
             break; // leaves loop because enemy gone
           }
-
-          // Checks to see if boss hit player 
-          if (projectiles[i].checkHit(player_1) && (projectiles[i].getPlayType() == "lofiBoss" || projectiles[i].getPlayType() == "rockShooter") && player_1.can_hit == true) { // this detects hits on the player
-            player_1.health--;
-            player_1.invincible();
-            console.log(player_1.health);
-            if (player_1.health <= 0) {
-              gameOver = true;
-            }
-            break;
         }
+
+        if (projectiles[i] && projectiles[i].checkHit(player_1) && (projectiles[i].getPlayType() == "lofiBoss" || projectiles[i].getPlayType() == "rockShooter") && player_1.can_hit == true) { // this detects hits on the player
+          player_1.health--;
+          player_1.invincible();
+          console.log(player_1.health);
+          if (player_1.health <= 0) {
+            gameOver = true;
+          }
+          break;
         }
       }
       
@@ -167,12 +178,26 @@ function lofiDraw() {
           player_1.increaseHealth();
           healthIndex++;
           items.splice(i, 1);
-        }
-        if (items[i] instanceof ExitItem) {
+          continue;
+        } else if (items[i] instanceof PowerUp) {
+          if (items[i].getImage() == shieldBox) {
+            if (!player_1.can_hit == false) {
+              player_1.shieldImmunity();
+              items.splice(i, 1);
+              continue;
+            }
+          } else if (items[i].getImage() == shotgunBox) {
+            weapon = 1;
+            player_1.powerUpTimer = POWERUP_DURATION;
+            items.splice(i, 1);
+            continue;
+          }
+        } else if (items[i] instanceof ExitItem) {
           player_1.is_exiting = true;
           weapon = 3;
           player_1.powerUpTimer = POWERUP_DURATION;
           items.splice(i, 1);
+          continue;
         }
       }
 

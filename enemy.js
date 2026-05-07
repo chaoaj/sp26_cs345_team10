@@ -28,8 +28,6 @@ class Enemy {
 
     draw() {
         if (this.hit) {
-            fill("red");
-            circle(this.pos.x, this.pos.y, 30); // this is currently for testing but works to show collisions
             this.hit = false;
         } else {
             // Dynamic sprite centering
@@ -137,8 +135,6 @@ class Shooter extends Enemy {
     // Override draw to not draw the last frame
     draw() {
         if (this.hit) {
-            fill("red");
-            circle(this.pos.x, this.pos.y, 30); // this is currently for testing but works to show collisions
             this.hit = false;
         } else {
             this.Enemy_ani.showAllButLast(this.pos.x - 50, this.pos.y - 60, this.facingLeft); // these positions are dependant on the size of the sprite, change that, change these
