@@ -504,15 +504,6 @@ function keyPressed() {
         showSettings = false;
         return;
     }
-    if (key === 'c') { // added for testing
-        switchLevel('end');
-    }
-    if (key === 'v') { // added for testing
-        switchLevel('rock');
-    }
-    if (key === 'e') { // added for testing
-        switchLevel('edm');
-    }
     if (key == 'Escape' && levelRender != 'menu') {
         // Toggle pausing variable
         if (showTutorialOverlay) {
