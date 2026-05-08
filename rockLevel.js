@@ -166,18 +166,39 @@ function rockDraw() {
           if (enemies[j] instanceof Bomber) {
             enemies[j].explode();
           } else {
-            let rand = random(15); // around 10 percent chance of spawning
-            console.log(rand)
-            if (random(1) < 0.3) {
-              let itemRoll = random(4);
-              if (itemRoll < 1) {
-                items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
-              } else if (itemRoll < 2) {
-                items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
-              } else if (itemRoll < 3) {
-                items.push(new PowerUp(shieldBox, enemies[j].pos.x, enemies[j].pos.y));
-              } else {
-                items.push(new PowerUp(laserBox, enemies[j].pos.x, enemies[j].pos.y));
+            if (game_mode == 'arcade') {
+              let rand = random(10); // around 10 percent chance of spawning
+              console.log(rand)
+              if (random(1) < 0.5) {
+                let itemRoll = random(5);
+                if (itemRoll < 1) {
+                  items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else if (itemRoll < 2) {
+                  items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else if (itemRoll < 3) {
+                  items.push(new PowerUp(shieldBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else if (itemRoll < 4) {
+                  items.push(new PowerUp(vinylBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else {
+                  items.push(new PowerUp(laserBox, enemies[j].pos.x, enemies[j].pos.y));
+                }
+              }
+            }
+
+            if (game_mode == 'story') {
+              let rand = random(10); // around 10 percent chance of spawning
+              console.log(rand)
+              if (random(1) < 0.3) {
+                let itemRoll = random(4);
+                if (itemRoll < 1) {
+                  items.push(new HealthItem(healthBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else if (itemRoll < 2) {
+                  items.push(new PowerUp(shotgunBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else if (itemRoll < 3) {
+                  items.push(new PowerUp(shieldBox, enemies[j].pos.x, enemies[j].pos.y));
+                } else {
+                  items.push(new PowerUp(laserBox, enemies[j].pos.x, enemies[j].pos.y));
+                }
               }
             }
             // Play SFX for when enemy dies
@@ -299,6 +320,12 @@ function rockDraw() {
           }
           if (items[i].getImage() == laserBox) {
             weapon = 2;
+            player_1.powerUpTimer = POWERUP_DURATION;
+            items.splice(i, 1);
+            continue;
+          }
+          if (items[i].getImage() == vinylBox) {
+            weapon = 3;
             player_1.powerUpTimer = POWERUP_DURATION;
             items.splice(i, 1);
             continue;
