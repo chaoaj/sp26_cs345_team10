@@ -53,7 +53,7 @@ let levelMusic;
 let sfx_volume = 0.3;
 let music_volume = 0.3;
 
-// Assets loaded in preload()
+// assets loaded in preload()
 var menuBacking, menuMusic, menuLargeBg, menuStartButton;
 var menuSettingsButton, menuHowToButton, menuStoryButton, menuArcadeButton, menuChaoButton, menuLogoGlow;
 var returnMenuButton, creditsButton;
@@ -109,163 +109,163 @@ let inGameSettingsHovered = false;
 // Pre-load ALL game assets
 function preload() {
     // Main menu
-    menuBacking = loadImage('Assets/GUI/menu_lava.png');
-    menuMusic = loadSound('Assets/Music/RythemizerThemeExtended.mp3');
-    menuLargeBg = loadImage('Assets/GUI/menu_background.png');
-    menuStartButton = [loadImage('Assets/Buttons/start.png'), loadImage('Assets/Buttons/start_select.png')];
-    menuSettingsButton = [loadImage('Assets/Buttons/settings.png'), loadImage('Assets/Buttons/settings_select.png')];
-    menuHowToButton = [loadImage('Assets/Buttons/how_to_play.png'), loadImage('Assets/Buttons/how_to_play_select.png')];
-    menuStoryButton = [loadImage('Assets/Buttons/story.png'), loadImage('Assets/Buttons/story_select.png')];
-    menuArcadeButton = [loadImage('Assets/Buttons/arcade.png'), loadImage('Assets/Buttons/arcade_select.png')];
-    menuChaoButton = [loadImage('Assets/Buttons/chao.png'), loadImage('Assets/Buttons/chao_select.png')];
-    returnMenuButton = [loadImage('Assets/Buttons/main_menu.png'), loadImage('Assets/Buttons/main_menu_select.png')];
-    creditsButton = [loadImage('Assets/Buttons/credits.png'), loadImage('Assets/Buttons/credits_select.png')];
-    menuResumeButton = [loadImage('Assets/Buttons/resume.png'), loadImage('Assets/Buttons/resume_select.png')];
-    menuLogoGlow = loadImage('Assets/GUI/logo_glow.png');
-    returnMenuLava   = loadImage('Assets/GUI/return_menu_lava.png');
-    returnMenuYes    = [loadImage('Assets/Buttons/return_menu_yes.png'),    loadImage('Assets/Buttons/return_menu_yes_select.png')];
-    returnMenuNo     = [loadImage('Assets/Buttons/return_menu_no.png'),     loadImage('Assets/Buttons/return_menu_no_select.png')];
+    menuBacking = loadImage('assets/gui/menu_lava.png');
+    menuMusic = loadSound('assets/music/RythemizerThemeExtended.mp3');
+    menuLargeBg = loadImage('assets/gui/menu_background.png');
+    menuStartButton = [loadImage('assets/buttons/start.png'), loadImage('assets/buttons/start_select.png')];
+    menuSettingsButton = [loadImage('assets/buttons/settings.png'), loadImage('assets/buttons/settings_select.png')];
+    menuHowToButton = [loadImage('assets/buttons/how_to_play.png'), loadImage('assets/buttons/how_to_play_select.png')];
+    menuStoryButton = [loadImage('assets/buttons/story.png'), loadImage('assets/buttons/story_select.png')];
+    menuArcadeButton = [loadImage('assets/buttons/arcade.png'), loadImage('assets/buttons/arcade_select.png')];
+    menuChaoButton = [loadImage('assets/buttons/chao.png'), loadImage('assets/buttons/chao_select.png')];
+    returnMenuButton = [loadImage('assets/buttons/main_menu.png'), loadImage('assets/buttons/main_menu_select.png')];
+    creditsButton = [loadImage('assets/buttons/credits.png'), loadImage('assets/buttons/credits_select.png')];
+    menuResumeButton = [loadImage('assets/buttons/resume.png'), loadImage('assets/buttons/resume_select.png')];
+    menuLogoGlow = loadImage('assets/gui/logo_glow.png');
+    returnMenuLava   = loadImage('assets/gui/return_menu_lava.png');
+    returnMenuYes    = [loadImage('assets/buttons/return_menu_yes.png'),    loadImage('assets/buttons/return_menu_yes_select.png')];
+    returnMenuNo     = [loadImage('assets/buttons/return_menu_no.png'),     loadImage('assets/buttons/return_menu_no_select.png')];
     
     
 
     // Metal level
-    metal_back = loadImage('Assets/Levels/Test_Level_Lava.png');
-    rockMusic = loadSound('Assets/Music/Organica - Master of None.mp3');
-    dragonJSON = loadJSON('Assets/Bosses/guitar_dragon_boss.json');
-    dragonSpriteSheet = loadImage('Assets/Bosses/guitar_dragon_boss.png');
+    metal_back = loadImage('assets/levels/Test_Level_Lava.png');
+    rockMusic = loadSound('assets/music/Organica - Master of None.mp3');
+    dragonJSON = loadJSON('assets/bosses/guitar_dragon_boss.json');
+    dragonSpriteSheet = loadImage('assets/bosses/guitar_dragon_boss.png');
 
     // EDM level
-    edm_back = loadImage('Assets/Levels/test_level_edm.png');
-    edmMusic = loadSound('Assets/Music/ThatsSoRAVEn.mp3');
-    rave_knightJSON = loadJSON('Assets/Bosses/rave_knight.json');
-    rave_knightSheet = loadImage('Assets/Bosses/rave_knight.png');
+    edm_back = loadImage('assets/levels/test_level_edm.png');
+    edmMusic = loadSound('assets/music/ThatsSoRAVEn.mp3');
+    rave_knightJSON = loadJSON('assets/bosses/rave_knight.json');
+    rave_knightSheet = loadImage('assets/bosses/rave_knight.png');
 
     // Lofi level
-    lofi_back = loadImage('Assets/Levels/test_level_lofi.png');
-    lofiMusic = loadSound('Assets/Music/LofiCrapIMadeIn20Minutes.mp3');
-    bard_JSON = loadJSON('Assets/Bosses/vibe_bard.json');
-    bard_spriteSheet = loadImage('Assets/Bosses/vibe_bard.png');
+    lofi_back = loadImage('assets/levels/test_level_lofi.png');
+    lofiMusic = loadSound('assets/music/LofiCrapIMadeIn20Minutes.mp3');
+    bard_JSON = loadJSON('assets/bosses/vibe_bard.json');
+    bard_spriteSheet = loadImage('assets/bosses/vibe_bard.png');
 
-    // Player 
-    spritesheet = loadImage('Assets/Player/red_guy_sheet.png');
-    spriteData = loadJSON('Assets/Player/redguy.json');
-    rollJSON = loadJSON('Assets/Player/roll_anim.json')
-    rollspritesheet = loadImage('Assets/Player/roll_anim.png')
+    // player 
+    spritesheet = loadImage('assets/player/red_guy_sheet.png');
+    spriteData = loadJSON('assets/player/redguy.json');
+    rollJSON = loadJSON('assets/player/roll_anim.json')
+    rollspritesheet = loadImage('assets/player/roll_anim.png')
 
-    // Player Bullets
-    bullet = loadImage('Assets/Projectiles/bullet.png');
-    bulletData = loadJSON('Assets/Projectiles/bullet.json');
-    fastBullet = loadImage('Assets/Projectiles/fast_bullet.png');
-    fastBulletData = loadJSON('Assets/Projectiles/fast_bullet.json');
-    laserPink = loadImage('Assets/Projectiles/laser_pink.png');
-    laserPinkData = loadJSON('Assets/Projectiles/laser_pink.json');
-    vinylGreen = loadImage('Assets/Projectiles/vinyl_green_sheet.png');
-    vinylGreenData = loadJSON('Assets/Projectiles/vinyl_green.json');
-    vinylPink = loadImage('Assets/Projectiles/vinyl_pink_sheet.png');
-    vinylPinkData = loadJSON('Assets/Projectiles/vinyl_pink.json');
-    vinylBlue = loadImage('Assets/Projectiles/vinyl_blue_sheet.png');
-    vinylBlueData = loadJSON('Assets/Projectiles/vinyl_blue.json');
+    // player Bullets
+    bullet = loadImage('assets/projectiles/bullet.png');
+    bulletData = loadJSON('assets/projectiles/bullet.json');
+    fastBullet = loadImage('assets/projectiles/fast_bullet.png');
+    fastBulletData = loadJSON('assets/projectiles/fast_bullet.json');
+    laserPink = loadImage('assets/projectiles/laser_pink.png');
+    laserPinkData = loadJSON('assets/projectiles/laser_pink.json');
+    vinylGreen = loadImage('assets/projectiles/vinyl_green_sheet.png');
+    vinylGreenData = loadJSON('assets/projectiles/vinyl_green.json');
+    vinylPink = loadImage('assets/projectiles/vinyl_pink_sheet.png');
+    vinylPinkData = loadJSON('assets/projectiles/vinyl_pink.json');
+    vinylBlue = loadImage('assets/projectiles/vinyl_blue_sheet.png');
+    vinylBlueData = loadJSON('assets/projectiles/vinyl_blue.json');
 
     // End Screen
-    endScene = loadImage('Assets/GUI/end_scene-faster.gif');
-    endScenePlayer = loadImage('Assets/GUI/end_scene_player-faster.gif');
-    endMusic = loadSound('Assets/Music/EndGameTheme.mp3')
+    endScene = loadImage('assets/gui/end_scene-faster.gif');
+    endScenePlayer = loadImage('assets/gui/end_scene_player-faster.gif');
+    endMusic = loadSound('assets/music/EndGameTheme.mp3')
 
-    // ------ Enemies ------ 
+    // ------ enemies ------ 
     // Runner
-    runnerSheet = loadImage('Assets/Enemies/vinyl_runner.png');
-    runnerData = loadJSON('Assets/Enemies/vinyl_runner.json');
+    runnerSheet = loadImage('assets/enemies/vinyl_runner.png');
+    runnerData = loadJSON('assets/enemies/vinyl_runner.json');
     // Big Bass
-    big_bassSheet = loadImage('Assets/Enemies/big_bass.png');
-    big_bassData = loadJSON('Assets/Enemies/big_bass.json');
+    big_bassSheet = loadImage('assets/enemies/big_bass.png');
+    big_bassData = loadJSON('assets/enemies/big_bass.json');
     // Disc Thrower
-    disc_throwerSheet = loadImage('Assets/Enemies/disc_thrower.png');
-    disc_throwerData = loadJSON('Assets/Enemies/disc_thrower.json');
+    disc_throwerSheet = loadImage('assets/enemies/disc_thrower.png');
+    disc_throwerData = loadJSON('assets/enemies/disc_thrower.json');
     // Small Amp
-    amp_smallSheet = loadImage('Assets/Enemies/small_amp.png');
-    amp_smallData = loadJSON('Assets/Enemies/small_amp.json');
+    amp_smallSheet = loadImage('assets/enemies/small_amp.png');
+    amp_smallData = loadJSON('assets/enemies/small_amp.json');
     // Cat Rider
-    cat_riderSheet = loadImage('Assets/Enemies/cat_waverider.png');
-    cat_riderData = loadJSON('Assets/Enemies/cat_waverider.json');
+    cat_riderSheet = loadImage('assets/enemies/cat_waverider.png');
+    cat_riderData = loadJSON('assets/enemies/cat_waverider.json');
     // Pedal Floater
-    pedal_floaterSheet = loadImage('Assets/Enemies/pedal_floater.png');
-    pedal_floaterData = loadJSON('Assets/Enemies/pedal_floater.json');
+    pedal_floaterSheet = loadImage('assets/enemies/pedal_floater.png');
+    pedal_floaterData = loadJSON('assets/enemies/pedal_floater.json');
     // ---------------------
 
-    // Enemy Projectiles
-    fireballSheet = loadImage('Assets/Projectiles/fireball.png');
-    fireballData = loadJSON('Assets/Projectiles/fireball.json');
-    quarterNote = loadImage('Assets/Projectiles/quarter_note.png');
-    hypnoWaveSheet = loadImage('Assets/Projectiles/hypno_wave.png');
+    // Enemy projectiles
+    fireballSheet = loadImage('assets/projectiles/fireball.png');
+    fireballData = loadJSON('assets/projectiles/fireball.json');
+    quarterNote = loadImage('assets/projectiles/quarter_note.png');
+    hypnoWaveSheet = loadImage('assets/projectiles/hypno_wave.png');
 
     // Elemental explosion
-    eleExplodeSprite = loadImage('Assets/element_explosion.png');
-    eleExplodeData = loadJSON('Assets/element_explosion.json'); 
+    eleExplodeSprite = loadImage('assets/element_explosion.png');
+    eleExplodeData = loadJSON('assets/element_explosion.json'); 
     
     //Fire explosion
-    fireExplodeSprite = loadImage('Assets/fire_explosion.png');
-    fireExplodeData = loadJSON('Assets/fire_explosion.json');
+    fireExplodeSprite = loadImage('assets/fire_explosion.png');
+    fireExplodeData = loadJSON('assets/fire_explosion.json');
 
     // Guns
-    pistolSprite = loadImage('Assets/Weapons/pistol.png')
-    laserSprite = loadImage('Assets/Weapons/beat_laser.png')
-    discThrowerSprite = loadImage('Assets/Weapons/disc_thrower.png')
-    shotgunSprite = loadImage('Assets/Weapons/shotgun.png')
+    pistolSprite = loadImage('assets/weapons/pistol.png')
+    laserSprite = loadImage('assets/weapons/beat_laser.png')
+    discThrowerSprite = loadImage('assets/weapons/disc_thrower.png')
+    shotgunSprite = loadImage('assets/weapons/shotgun.png')
 
     // Shield
-    shieldSheet = loadImage('Assets/Player/shield.png')
-    shieldData = loadJSON('Assets/Player/shield.json')
+    shieldSheet = loadImage('assets/player/shield.png')
+    shieldData = loadJSON('assets/player/shield.json')
     
     // Health Bar
-    healthBarSheet = loadImage('Assets/GUI/health_bar.png');
-    healthBarData = loadJSON('Assets/GUI/health_bar.json');
+    healthBarSheet = loadImage('assets/gui/health_bar.png');
+    healthBarData = loadJSON('assets/gui/health_bar.json');
 
     // In-game settings (gear) button
-    settingsIconSheet = loadImage('Assets/GUI/setting.png');
-    settingsIconData = loadJSON('Assets/GUI/setting.json');
+    settingsIconSheet = loadImage('assets/gui/setting.png');
+    settingsIconData = loadJSON('assets/gui/setting.json');
     
     // Game Over
-    gameOverImage = loadImage('Assets/GUI/death_screen.png');
-    gameOverMusic = loadSound('Assets/Music/29_Ghosts_IV.mp3');
+    gameOverImage = loadImage('assets/gui/death_screen.png');
+    gameOverMusic = loadSound('assets/music/29_Ghosts_IV.mp3');
 
     // Pixel font used for arcade-style overlays (e.g. wave counter)
-    pixelFont = loadFont('Assets/GUI/pixel-font-supersoft-assets/ttf/supersoft.ttf');
+    pixelFont = loadFont('assets/gui/pixel-font-supersoft-assets/ttf/supersoft.ttf');
 
-    // Items
-    healthBox = loadImage('Assets/Items/health_box.png');
-    shieldBox = loadImage('Assets/Items/shield_box.png');
-    shotgunBox = loadImage('Assets/Items/shotgun_box.png');
-    laserBox = loadImage('Assets/Items/laser_box.png');
-    vinylBox = loadImage('Assets/Items/disc_shooter_box.png');
-    exitItem = loadImage('Assets/Items/end_story_item.png');
+    // items
+    healthBox = loadImage('assets/items/health_box.png');
+    shieldBox = loadImage('assets/items/shield_box.png');
+    shotgunBox = loadImage('assets/items/shotgun_box.png');
+    laserBox = loadImage('assets/items/laser_box.png');
+    vinylBox = loadImage('assets/items/disc_shooter_box.png');
+    exitItem = loadImage('assets/items/end_story_item.png');
     
     // Tutorial images/gif
-    tutorialImages[0] = loadImage('Assets/GUI/tutorial_1.png');
-    tutorialImages[1] = loadImage('Assets/GUI/tutorial_2.png');
-    tutorialImages[2] = loadImage('Assets/GUI/tutorial_3.png');
-    tutorialImages[3] = loadImage('Assets/GUI/tutorial_4.png');
-    tutorialGifCreate = createImg('Assets/GUI/rolling.gif');
+    tutorialImages[0] = loadImage('assets/gui/tutorial_1.png');
+    tutorialImages[1] = loadImage('assets/gui/tutorial_2.png');
+    tutorialImages[2] = loadImage('assets/gui/tutorial_3.png');
+    tutorialImages[3] = loadImage('assets/gui/tutorial_4.png');
+    tutorialGifCreate = createImg('assets/gui/rolling.gif');
 
     
     // End screen gifs
-    playerWalking = loadImage('Assets/GUI/player_walking.gif');
-    endScene = loadImage('Assets/GUI/end_scene.gif');
-    endScenePlayer = loadImage('Assets/GUI/end_scene_player.gif');
+    playerWalking = loadImage('assets/gui/player_walking.gif');
+    endScene = loadImage('assets/gui/end_scene.gif');
+    endScenePlayer = loadImage('assets/gui/end_scene_player.gif');
 
     // Credits
-    creditsImage = loadImage('Assets/GUI/credits.png');
+    creditsImage = loadImage('assets/gui/credits.png');
 
     // Tutorial music
-    tutorialMusic = loadSound('Assets/Music/The_Four_(five)_Of_Us_Are_dying.mp3');
+    tutorialMusic = loadSound('assets/music/The_Four_(five)_Of_Us_Are_dying.mp3');
 
-    // --------------SFX---------------
-    explosionNormal = loadSound('Assets/SFX/sfx_explosionNormal.ogg');
-    healthSFX = loadSound('Assets/SFX/sfx_health.ogg');
-    shockedSFX = loadSound('Assets/SFX/sfx_shocked.ogg'); 
-    waveClearSFX = loadSound('Assets/SFX/sfx_waveclear.ogg');
-    selectSFX = loadSound('Assets/SFX/sfx_select.ogg');
-    toggleSFX = loadSound('Assets/SFX/sfx_toggle.ogg');
-    rollSFX = loadSound('Assets/SFX/sfx_roll.ogg');
+    // --------------sfx---------------
+    explosionNormal = loadSound('assets/sfx/sfx_explosionNormal.ogg');
+    healthSFX = loadSound('assets/sfx/sfx_health.ogg');
+    shockedSFX = loadSound('assets/sfx/sfx_shocked.ogg'); 
+    waveClearSFX = loadSound('assets/sfx/sfx_waveclear.ogg');
+    selectSFX = loadSound('assets/sfx/sfx_select.ogg');
+    toggleSFX = loadSound('assets/sfx/sfx_toggle.ogg');
+    rollSFX = loadSound('assets/sfx/sfx_roll.ogg');
 }
 
 function setup() {
@@ -418,7 +418,7 @@ function drawInGameSettingsButton() {
         mouseX >= x && mouseX <= x + size &&
         mouseY >= y && mouseY <= y + size;
 
-    // Hover SFX (only fire once when entering the button)
+    // Hover sfx (only fire once when entering the button)
     if (hovering && !inGameSettingsHovered) {
         if (typeof playSFX === "function") {
             playSFX("hover");
